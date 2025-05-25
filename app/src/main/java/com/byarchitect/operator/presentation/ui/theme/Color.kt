@@ -1,4 +1,4 @@
-package com.byarchitect.operator.ui.theme
+package com.byarchitect.operator.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
