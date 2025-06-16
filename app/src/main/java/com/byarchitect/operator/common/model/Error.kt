@@ -1,19 +1,20 @@
 package com.byarchitect.operator.common.model
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+
 
 data class Error(
-    val message: String,
-    val localizedMessage: String,
-    val cause: String,
-    val errorLocation: String,
-    val time: Long,
-    val description: String?,
+    val messageResourceId: Int,
+    val exception: String?,
 ) {
 
+}
 
-    val json:String = """{"message": "$message", "localizedMessage": "$localizedMessage", "cause": "$cause", "errorLocation": "$errorLocation", "time": $time, "description": "$description"}"""
-
-    override fun toString(): String {
-        return "Error(message='$message', localizedMessage='$localizedMessage', cause='$cause', errorLocation='$errorLocation', time=$time, description=$description)"
-    }
+@Composable
+fun errorResource(error: Error): String {
+    return if (error.exception != null) {
+        stringResource(error.messageResourceId) + ": " + error.exception
+    } else
+        stringResource(error.messageResourceId)
 }
