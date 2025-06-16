@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.common.model.errorResource
+import com.byarchitect.operator.common.util.test
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.system.ShellManager
 import com.byarchitect.operator.data.system.SystemFetcher
@@ -113,7 +114,7 @@ fun ProcessScreen(
         }
         else -> {
 
-            ScrollableDataTable(processLabelList =processLabelList ,data = uiState.processes)
+            ScrollableDataTable(processLabelList =processLabelList ,data = uiState.processes, viewModel = viewModel)
 
         }
     }
@@ -123,7 +124,8 @@ fun ProcessScreen(
 fun ScrollableDataTable(
     processLabelList: List<ProcessLabel>,
     data: List<Map<ProcessLabel, String>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProcessViewModel
 ) {
     if (data.isEmpty()) return
 
@@ -169,14 +171,15 @@ fun ScrollableDataTable(
         ) {
             itemsIndexed(data) { index, row ->
                 Card(
+                    onClick = ({
+                       viewModel.killProcess(row[ProcessLabel.PID]!!.toInt())
+                    }),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 1.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = if (index % 2 == 0)
-                            Color.Black
-                        else
-                            Color(0xFFF5F5F5)
+                        containerColor = Color(0xFFF5F5F5)
+
                     )
                 ) {
                     Row(

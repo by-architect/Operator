@@ -56,8 +56,18 @@ data class ProcessViewModel @Inject constructor(
             initialValue = ProcessListState()
         )
 
+    fun killProcess(pid: Int) {
+        systemFetcher.killProcess(pid).launchIn(viewModelScope)
+    }
 
-    fun load(defaultLabels: List<ProcessLabel> = listOf(ProcessLabel.RSS, ProcessLabel.C,ProcessLabel.CPU_PERCENTAGE, ProcessLabel.PID, ProcessLabel.NAME, ProcessLabel.BIT)) {
+
+    fun load(
+        defaultLabels: List<ProcessLabel> = listOf(
+            ProcessLabel.PID,
+            ProcessLabel.CPU_PERCENTAGE,
+            ProcessLabel.NAME
+        )
+    ) {
         _processLabels.value = defaultLabels
     }
 
