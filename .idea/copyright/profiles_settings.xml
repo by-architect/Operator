@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <settings>
+    <LanguageOptions name="Kotlin">
+      <option name="separateAfter" value="true" />
+      <option name="lenBefore" value="150" />
+      <option name="lenAfter" value="20" />
+    </LanguageOptions>
+  </settings>
+</component>

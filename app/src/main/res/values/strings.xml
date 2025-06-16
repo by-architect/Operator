@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Operator</string>
+    <string name="error_not_root">Root not detected</string>
+    <string name="error_unknown">Unexpected Error Occured</string>
 </resources>

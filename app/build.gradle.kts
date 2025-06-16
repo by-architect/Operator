@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
 }
 
 android {
@@ -62,4 +63,13 @@ dependencies {
     implementation(libs.core)
     implementation(libs.service)
     implementation (libs.nio)
+
+    implementation(libs.hilt.android)
+
+    // Hilt
+    implementation(libs.hilt.android.v248)
+
+    // For ViewModels
+    implementation(libs.androidx.hilt.navigation.compose) // For Compose
+    implementation(libs.androidx.fragment.ktx) // For Fragment
 }

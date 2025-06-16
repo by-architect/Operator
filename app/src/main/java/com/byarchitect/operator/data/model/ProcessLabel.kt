@@ -61,7 +61,7 @@ enum class ProcessLabel(val label: String ) {
     WRITE("WRITE");
 
     companion object {
-        fun romLabel(label: String): ProcessLabel? = entries.find { it.label == label }
+        fun fromLabel(label: String): ProcessLabel? = entries.find { it.label == label }
     }
 
 }
