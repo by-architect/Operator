@@ -6,7 +6,7 @@ import androidx.compose.ui.res.stringResource
 
 data class Error(
     val messageResourceId: Int,
-    val exception: String?,
+    val exception: Exception?,
 ) {
 
 }
@@ -14,7 +14,7 @@ data class Error(
 @Composable
 fun errorResource(error: Error): String {
     return if (error.exception != null) {
-        stringResource(error.messageResourceId) + ": " + error.exception
+        stringResource(error.messageResourceId) + ": " + error.exception.localizedMessage
     } else
         stringResource(error.messageResourceId)
 }
