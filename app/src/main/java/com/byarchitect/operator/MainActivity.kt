@@ -40,7 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.model.ProcessLabel
+import com.byarchitect.operator.data.system.ShellManager
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.ProcessViewModel
 import com.byarchitect.operator.presentation.ui.theme.OperatorTheme
@@ -48,6 +50,7 @@ import com.byarchitect.operator.presentation.ui.theme.OperatorTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             OperatorTheme {
@@ -105,7 +108,7 @@ fun ProcessScreen(
         }
         uiState.error != null -> {
 
-            Text(stringResource(uiState.error!!))
+            Text(errorResource(uiState.error!!))
 
         }
         else -> {
