@@ -9,7 +9,14 @@ data class Error(
     val exception: Exception?,
 ) {
 
+    companion object {
+        fun unknownError(): Error {
+            return Error(com.byarchitect.operator.R.string.error_unknown, null)
+        }
+    }
 }
+
+
 
 @Composable
 fun errorResource(error: Error): String {

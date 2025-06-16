@@ -3,6 +3,7 @@ package com.byarchitect.operator.presentation.process
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.byarchitect.operator.R
+import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.system.SystemFetcher
@@ -44,7 +45,7 @@ data class ProcessViewModel @Inject constructor(
                         )
 
                         is Resource.Error -> ProcessListState(
-                            error = resource.messageId ?: R.string.error_unknown
+                            error = resource.error ?: Error.unknownError()
                         )
                     }
                 }
@@ -56,7 +57,7 @@ data class ProcessViewModel @Inject constructor(
         )
 
 
-    fun load(defaultLabels: List<ProcessLabel> = listOf(ProcessLabel.CPU_PERCENTAGE, ProcessLabel.PID, ProcessLabel.NAME, ProcessLabel.BIT)) {
+    fun load(defaultLabels: List<ProcessLabel> = listOf(ProcessLabel.RSS, ProcessLabel.C,ProcessLabel.CPU_PERCENTAGE, ProcessLabel.PID, ProcessLabel.NAME, ProcessLabel.BIT)) {
         _processLabels.value = defaultLabels
     }
 
