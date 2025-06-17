@@ -1,5 +1,6 @@
 package com.byarchitect.operator.presentation.process
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.byarchitect.operator.R
@@ -30,6 +31,8 @@ data class ProcessViewModel @Inject constructor(
     private val _processLabels = MutableStateFlow<List<ProcessLabel>>(listOf(ProcessLabel.PID, ProcessLabel.NAME))
     val processLabels: StateFlow<List<ProcessLabel>> = _processLabels.asStateFlow()
 
+    private val _shellState = MutableStateFlow<ShellState>(ShellState())
+    val shellState: StateFlow<ShellState> = _shellState.asStateFlow()
     //private val _uiState = MutableStateFlow(ProcessListState())
     //val uiState: StateFlow<ProcessListState> = _uiState.asStateFlow()
 
@@ -61,7 +64,7 @@ data class ProcessViewModel @Inject constructor(
     }
 
 
-    fun load(
+    fun loadProcesses(
         defaultLabels: List<ProcessLabel> = listOf(
             ProcessLabel.PID,
             ProcessLabel.CPU_PERCENTAGE,
@@ -74,6 +77,11 @@ data class ProcessViewModel @Inject constructor(
     fun updateLabels(newLabels: List<ProcessLabel>) {
         _processLabels.value = newLabels
     }
+
+    fun loadShell() {
+        systemFetcher.loadShell().launchIn(viewModelScope)
+    }
+
 
     /*
             if (labels.isEmpty()) {

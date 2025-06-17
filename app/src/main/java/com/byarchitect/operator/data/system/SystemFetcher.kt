@@ -11,11 +11,8 @@ import kotlinx.coroutines.flow.flow
 
 class SystemFetcher() {
 
-    fun getProcessList(labels: List<ProcessLabel>): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
+    fun loadShell(): Flow<Resource<Any>> = flow {
         emit(Resource.Loading())
-
-
-        //handle this one in view model in start *************
         try {
             ShellManager.initializeShell()
         } catch (e: Exception) {
@@ -39,7 +36,14 @@ class SystemFetcher() {
             )
             return@flow
         }
-        //**********************
+        emit(Resource.Success(Any()))
+
+    }
+
+    fun getProcessList(labels: List<ProcessLabel>): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
+        emit(Resource.Loading())
+
+
 
 
         try {
