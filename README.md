@@ -18,7 +18,7 @@
 - ❌ **Kill Processes** – Terminate background processes with precision.
 - 📂 **Detailed Process Info** – Access CPU, memory, PID, and more.
 - 🧠 **Minimal UI, Maximum Control** – Clean, fast, and purpose-built UI.
-- 🔐 **Root Support** – For deeper access and full control (optional).
+- 🔐 **Root Require** – For deeper access and full control.
 
 ---
 
