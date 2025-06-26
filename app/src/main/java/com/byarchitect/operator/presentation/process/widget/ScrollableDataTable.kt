@@ -207,7 +207,7 @@ fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? 
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White,
                 textAlign = TextAlign.Center
             )
             if (ascending != null)
