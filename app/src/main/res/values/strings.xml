@@ -4,4 +4,5 @@
     <string name="error_unknown">Unexpected Error Occured</string>
     <string name="error_shell">Shell command is not successful</string>
     <string name="load_again">Try Again</string>
+    <string name="refresh_error">Error while refreshing process list</string>
 </resources>

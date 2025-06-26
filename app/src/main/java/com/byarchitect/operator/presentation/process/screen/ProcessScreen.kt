@@ -50,6 +50,7 @@ fun ProcessScreen(
                 viewModel.loadShell()
             }
 
+
             when {
                 shellState.isLoading -> CircularProgressIndicator()
                 shellState.error != null -> Column {

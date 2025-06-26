@@ -2,94 +2,141 @@ package com.byarchitect.operator.presentation.process.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
+import com.byarchitect.operator.data.model.ProcessSettings
+import com.byarchitect.operator.data.repository.ProcessSettingsHandler
 import com.byarchitect.operator.data.system.SystemFetcher
 import jakarta.inject.Inject
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 data class ProcessViewModel @Inject constructor(
     val systemFetcher: SystemFetcher
 ) : ViewModel() {
 
-    private val _processLabels = MutableStateFlow<List<ProcessLabel>>(listOf(ProcessLabel.PID, ProcessLabel.NAME))
+    private val settingsHandler = ProcessSettingsHandler()
+
+    private val _processLabels = MutableStateFlow<List<ProcessLabel>>(ProcessSettings.default().processLabels)
     val processLabels: StateFlow<List<ProcessLabel>> = _processLabels.asStateFlow()
 
     private val _shellState = MutableStateFlow(ShellState())
     val shellState: StateFlow<ShellState> = _shellState.asStateFlow()
 
+    private val _refreshInterval = MutableStateFlow(ProcessSettings.default().refreshRate)
+    val refreshInterval: StateFlow<Long> = _refreshInterval.asStateFlow()
+
+    private val _uiState = MutableStateFlow(ProcessListState())
+    val uiState: StateFlow<ProcessListState> = _uiState.asStateFlow()
+
+    private var refreshJob: Job? = null
+
     init {
         loadShell()
+        applyFirstValuesFromSettingsRepository()
+        setupListRefresh()
+        startPeriodicRefresh(_processLabels.value, _refreshInterval.value)
     }
 
     fun loadShell() {
         systemFetcher.loadShell().onEach { resource ->
             _shellState.value = when (resource) {
                 is Resource.Loading -> ShellState(isLoading = true)
-                is Resource.Success -> ShellState()
-                is Resource.Error -> ShellState(error = resource.error)
+                is Resource.Success -> ShellState(isLoading = false, success = true)
+                is Resource.Error -> ShellState(isLoading = false, error = resource.error)
             }
         }.launchIn(viewModelScope)
-
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val uiState: StateFlow<ProcessListState> = _processLabels
-        .flatMapLatest<List<ProcessLabel>, ProcessListState> { labels ->
-            systemFetcher.getProcessList(labels)
-                .map { resource ->
-                    when (resource) {
-                        is Resource.Loading -> ProcessListState(isLoading = true)
-                        is Resource.Success -> ProcessListState(
-                            processes = resource.data ?: emptyList()
-                        )
+    private fun setupListRefresh() {
 
-                        is Resource.Error -> ProcessListState(
-                            error = resource.error ?: Error.Companion.unknownError()
-                        )
-                    }
+        combine(shellState, refreshInterval, processLabels) { shellState, refreshInterval, processLabels ->
+            if (shellState.error != null) {
+                pauseRefresh()
+            } else {
+                handleRefreshConfigChange(processLabels, refreshInterval)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun applyFirstValuesFromSettingsRepository() {
+        settingsHandler.getSettings().onEach { resource ->
+            val defaultValues = ProcessSettings.default()
+            when (resource) {
+                is Resource.Loading -> {
+
                 }
+                is Resource.Success -> {
+                    _processLabels.value = resource.data?.processLabels ?: defaultValues.processLabels
+                    _refreshInterval.value = resource.data?.refreshRate ?: defaultValues.refreshRate
+                }
+
+                else -> {
+                    _processLabels.value = defaultValues.processLabels
+                    _refreshInterval.value = defaultValues.refreshRate
+                }
+
+            }
+        }.launchIn(viewModelScope)
+    }
+
+
+    private suspend fun refreshProcessList(processLabelList: List<ProcessLabel>) {
+        systemFetcher.getProcessList(processLabelList)
+            .onEach { resource ->
+                _uiState.value = when (resource) {
+                    is Resource.Loading -> _uiState.value.copy(isLoading = true)
+                    is Resource.Success -> _uiState.value.copy(
+                        isLoading = false,
+                        processes = resource.data ?: emptyList(),
+                        error = null
+                    )
+
+                    is Resource.Error -> _uiState.value.copy(
+                        isLoading = false,
+                        error = resource.error
+                    )
+                }
+            }
+            .catch { e ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = Error(messageResource = R.string.refresh_error, exception = Exception(e))
+                )
+            }.collect()
+    }
+
+    private fun startPeriodicRefresh(processLabelList: List<ProcessLabel>, intervalMilliseconds: Long) {
+        refreshJob = viewModelScope.launch {
+            while (isActive) {
+                refreshProcessList(processLabelList)
+                delay(intervalMilliseconds)
+            }
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Companion.WhileSubscribed(5000),
-            initialValue = ProcessListState()
-        )
-
-    fun killProcess(pid: Int) {
-        systemFetcher.killProcess(pid).launchIn(viewModelScope)
     }
 
+    private fun handleRefreshConfigChange(processLabelList: List<ProcessLabel>, refreshInterval: Long) {
+        refreshJob?.cancel()
 
-    fun loadProcesses(
-        defaultLabels: List<ProcessLabel> = listOf(
-            ProcessLabel.PID,
-            ProcessLabel.CPU_PERCENTAGE,
-            ProcessLabel.NAME
-        )
-    ) {
-        _processLabels.value = defaultLabels
+        startPeriodicRefresh(processLabelList, refreshInterval)
     }
-
-    fun updateLabels(newLabels: List<ProcessLabel>) {
-        _processLabels.value = newLabels
-    }
-
 
     /*
-            if (labels.isEmpty()) {
-                flowOf(ProcessListState()) // Empty state
-            } else {
+        @OptIn(ExperimentalCoroutinesApi::class)
+        val uiState: StateFlow<ProcessListState> = _processLabels
+            .flatMapLatest<List<ProcessLabel>, ProcessListState> { labels ->
                 systemFetcher.getProcessList(labels)
                     .map { resource ->
                         when (resource) {
@@ -97,41 +144,44 @@ data class ProcessViewModel @Inject constructor(
                             is Resource.Success -> ProcessListState(
                                 processes = resource.data ?: emptyList()
                             )
+
                             is Resource.Error -> ProcessListState(
-                                error = resource.messageId ?: R.string.error_unknown
+                                error = resource.error ?: Error.Companion.unknownError()
                             )
                         }
                     }
             }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Companion.WhileSubscribed(5000),
+                initialValue = ProcessListState()
+            )
     */
 
-    /*
-    fun loadProcessList(labels: List<ProcessLabel>) {
-        systemFetcher.getProcessList(labels).onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _uiState.update { it.copy(isLoading = true, error = null) }
-                }
 
-                is Resource.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false, processes = resource.data ?: emptyList(), error = null
-                        )
-                    }
-                }
-
-                is Resource.Error -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false, error = resource.messageId ?: com.byarchitect.operator.R.string.error_unknown
-                        )
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
+    fun resumeRefresh() {
+        if (refreshJob != null)
+            refreshJob?.start()
+        else
+            startPeriodicRefresh(_processLabels.value, _refreshInterval.value)
     }
-    */
+
+    fun pauseRefresh() {
+        refreshJob?.cancel()
+    }
+
+
+    fun setRefreshInterval(milliSeconds: Long) {
+        _refreshInterval.value = if (milliSeconds > 0) milliSeconds else ProcessSettings.default().refreshRate
+    }
+
+    fun updateProcessLabels(labels: List<ProcessLabel>) {
+        _processLabels.value = labels
+    }
+
+    fun killProcess(pid: Int) {
+        systemFetcher.killProcess(pid).launchIn(viewModelScope)
+    }
 
 
 }

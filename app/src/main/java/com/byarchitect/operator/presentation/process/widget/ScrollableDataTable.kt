@@ -38,7 +38,7 @@ fun ScrollableDataTable(
     val scrollState = rememberScrollState()
 
     Column(modifier = modifier.fillMaxSize()) {
-        // Fixed Header
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(

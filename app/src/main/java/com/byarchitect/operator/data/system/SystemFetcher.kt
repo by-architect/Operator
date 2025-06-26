@@ -42,10 +42,6 @@ class SystemFetcher() {
 
     fun getProcessList(labels: List<ProcessLabel>): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
         emit(Resource.Loading())
-
-
-
-
         try {
             val labelsAsString = labels.joinToString(",") { it.label }
             val data = Shell.cmd("ps -A -o $labelsAsString ").exec().out.toMutableList()
@@ -54,7 +50,7 @@ class SystemFetcher() {
             val processListMap: List<Map<ProcessLabel, String>> = dataLines
                 .filter { it.isNotBlank() }
                 .map { line ->
-                    val values = line.trim().split(Regex("\\s+"), labels.size)
+                    val values = line.trim().replace("[", "").replace("]", "").split(Regex("\\s+"), labels.size)
                     labels.zip(values).toMap()
                 }
             emit(Resource.Success(processListMap))

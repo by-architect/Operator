@@ -12,6 +12,7 @@ data class Error(
     val exception: Exception?,
 ) {
 
+
     init {
         logTest(title = "Resource Error", data = this)
     }
@@ -26,6 +27,7 @@ data class Error(
         return "Error(messageResourceId=$messageResource, exception=$exception)"
     }
 }
+
 
 
 @Composable
