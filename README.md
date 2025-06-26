@@ -7,9 +7,7 @@
 
 ---
 
-🧬 **Operator** is a powerful, Matrix-inspired Android Task Manager that lets you monitor, manage, and terminate processes directly from your device — no pills required.
-
-Designed for **power users, developers, and digital renegades**, Operator gives you root-level insight and control over what runs in your system. Inspired by *The Matrix*, this app acts like your personal operator, giving you the tools to navigate, analyze, and clean your system from within.
+🧬 **Operator** is a powerful, Matrix-inspired Android Task Manager that lets you monitor, manage, and terminate processes directly from your device
 
 ---
 
