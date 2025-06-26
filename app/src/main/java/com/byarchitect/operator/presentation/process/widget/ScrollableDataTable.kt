@@ -20,6 +20,10 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +46,8 @@ fun ScrollableDataTable(
     if (data.isEmpty()) return
 
     val scrollState = rememberScrollState()
+// State to track selected PID
+    var selectedPID by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = modifier.fillMaxSize()) {
 
@@ -49,9 +55,7 @@ fun ScrollableDataTable(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.Black),
-
-
-            ) {
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -104,16 +108,22 @@ fun ScrollableDataTable(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
             itemsIndexed(data) { index, row ->
+                val rowPID = row[ProcessLabel.PID] // Assuming ProcessLabel.PID is your PID key
+                val isSelected = selectedPID == rowPID
+
                 Card(
-                    onClick = ({
-                        //viewModel.killProcess(row[ProcessLabel.PID]!!.toInt())
-                    }),
+                    onClick = {
+                        // Select only one row - toggle if same row, otherwise select new row
+                        selectedPID = if (isSelected) null else rowPID
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 1.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFF5F5F5)
-
+                        containerColor = if (isSelected)
+                            Color(0xFFE3F2FD) // Light blue when selected
+                        else
+                            Color(0xFFF5F5F5)
                     )
                 ) {
                     Row(
@@ -160,13 +170,29 @@ fun ScrollableDataTable(
                 }
             }
         }
-        Row(modifier = Modifier.height(60.dp).fillMaxWidth().background(color = Color.Black),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+
+        // Bottom button row - only visible when a row is selected
+        if (selectedPID != null) {
+            Row(
+                modifier = Modifier
+                    .height(60.dp)
+                    .fillMaxWidth()
+                    .background(color = Color.Black),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-            ElevatedButton(
-                onClick = {}) {
-                Text(text = stringResource(R.string.kill))
+                ElevatedButton(
+                    onClick = {
+                        // Handle kill action for selected PID
+                        selectedPID?.let { pid ->
+                            // viewModel.killProcess(pid.toInt())
+                        }
+                        // Clear selection after action
+                        selectedPID = null
+                    }
+                ) {
+                    Text(text = stringResource(R.string.kill))
+                }
             }
         }
     }
