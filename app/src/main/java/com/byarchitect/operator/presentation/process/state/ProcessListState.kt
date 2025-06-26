@@ -1,4 +1,4 @@
-package com.byarchitect.operator.presentation.process
+package com.byarchitect.operator.presentation.process.state
 
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.data.model.ProcessLabel

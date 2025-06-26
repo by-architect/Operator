@@ -1,12 +1,14 @@
 package com.byarchitect.operator.common.model
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.platform.LocalContext
 import com.byarchitect.operator.common.util.logTest
 
 
 data class Error(
-    val messageResourceId: Int,
+    @StringRes val messageResource: Int,
     val exception: Exception?,
 ) {
 
@@ -21,16 +23,17 @@ data class Error(
     }
 
     override fun toString(): String {
-        return "Error(messageResourceId=$messageResourceId, exception=$exception)"
+        return "Error(messageResourceId=$messageResource, exception=$exception)"
     }
 }
 
 
-
 @Composable
+@ReadOnlyComposable
 fun errorResource(error: Error): String {
-    return if (error.exception != null) {
-        stringResource(error.messageResourceId) + ": " + error.exception.localizedMessage
-    } else
-        stringResource(error.messageResourceId)
+    val resources = LocalContext.current.resources
+    return if (error.exception != null)
+        resources.getString(error.messageResource) + ": " + error.exception.localizedMessage
+    else
+        resources.getString(error.messageResource)
 }

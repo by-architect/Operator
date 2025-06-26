@@ -1,6 +1,5 @@
 package com.byarchitect.operator.data.system
 
-import android.util.Log
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.common.util.test
@@ -13,17 +12,18 @@ class SystemFetcher() {
 
     fun loadShell(): Flow<Resource<Any>> = flow {
         emit(Resource.Loading())
+        ShellManager.closeShell()
         try {
             ShellManager.initializeShell()
         } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResourceId = com.byarchitect.operator.R.string.error_shell, exception = e)))
+            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
             return@flow
         }
         val shell = Shell.getShell()
         if (!shell.isAlive) {
             emit(
                 Resource.Error(
-                    Error(messageResourceId = com.byarchitect.operator.R.string.error_shell, null)
+                    Error(messageResource = com.byarchitect.operator.R.string.error_shell, null)
                 )
             )
             return@flow
@@ -31,7 +31,7 @@ class SystemFetcher() {
         if (!shell.isRoot) {
             emit(
                 Resource.Error(
-                    Error(messageResourceId = com.byarchitect.operator.R.string.error_not_root, null)
+                    Error(messageResource = com.byarchitect.operator.R.string.error_not_root, null)
                 )
             )
             return@flow
@@ -59,7 +59,7 @@ class SystemFetcher() {
                 }
             emit(Resource.Success(processListMap))
         } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResourceId = com.byarchitect.operator.R.string.error_shell, exception = e)))
+            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
         }
 
     }
@@ -70,7 +70,7 @@ class SystemFetcher() {
             val output = Shell.cmd("kill $pid").exec().out
             test = output
         } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResourceId = com.byarchitect.operator.R.string.error_shell, exception = e)))
+            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
         }
     }
 }

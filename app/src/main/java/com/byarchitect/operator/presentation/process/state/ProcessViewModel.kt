@@ -1,28 +1,22 @@
-package com.byarchitect.operator.presentation.process
+package com.byarchitect.operator.presentation.process.state
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.system.SystemFetcher
 import jakarta.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 data class ProcessViewModel @Inject constructor(
     val systemFetcher: SystemFetcher
@@ -31,10 +25,23 @@ data class ProcessViewModel @Inject constructor(
     private val _processLabels = MutableStateFlow<List<ProcessLabel>>(listOf(ProcessLabel.PID, ProcessLabel.NAME))
     val processLabels: StateFlow<List<ProcessLabel>> = _processLabels.asStateFlow()
 
-    private val _shellState = MutableStateFlow<ShellState>(ShellState())
+    private val _shellState = MutableStateFlow(ShellState())
     val shellState: StateFlow<ShellState> = _shellState.asStateFlow()
-    //private val _uiState = MutableStateFlow(ProcessListState())
-    //val uiState: StateFlow<ProcessListState> = _uiState.asStateFlow()
+
+    init {
+        loadShell()
+    }
+
+    fun loadShell() {
+        systemFetcher.loadShell().onEach { resource ->
+            _shellState.value = when (resource) {
+                is Resource.Loading -> ShellState(isLoading = true)
+                is Resource.Success -> ShellState()
+                is Resource.Error -> ShellState(error = resource.error)
+            }
+        }.launchIn(viewModelScope)
+
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiState: StateFlow<ProcessListState> = _processLabels
@@ -48,14 +55,14 @@ data class ProcessViewModel @Inject constructor(
                         )
 
                         is Resource.Error -> ProcessListState(
-                            error = resource.error ?: Error.unknownError()
+                            error = resource.error ?: Error.Companion.unknownError()
                         )
                     }
                 }
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Companion.WhileSubscribed(5000),
             initialValue = ProcessListState()
         )
 
@@ -76,10 +83,6 @@ data class ProcessViewModel @Inject constructor(
 
     fun updateLabels(newLabels: List<ProcessLabel>) {
         _processLabels.value = newLabels
-    }
-
-    fun loadShell() {
-        systemFetcher.loadShell().launchIn(viewModelScope)
     }
 
 
