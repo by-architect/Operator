@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
-import com.byarchitect.operator.data.model.ProcessLabel
+import com.byarchitect.operator.common.constant.ProcessLabel
 import com.byarchitect.operator.presentation.process.state.ProcessViewModel
 
 @Composable
@@ -171,7 +171,6 @@ fun ScrollableDataTable(
             }
         }
 
-        // Bottom button row - only visible when a row is selected
         if (selectedPID != null) {
             Row(
                 modifier = Modifier
@@ -183,11 +182,9 @@ fun ScrollableDataTable(
             ) {
                 ElevatedButton(
                     onClick = {
-                        // Handle kill action for selected PID
                         selectedPID?.let { pid ->
-                            // viewModel.killProcess(pid.toInt())
+                            viewModel.killProcess(pid.toInt())
                         }
-                        // Clear selection after action
                         selectedPID = null
                     }
                 ) {
