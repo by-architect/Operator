@@ -6,7 +6,12 @@ data class ProcessSettings(
 ) {
 
     companion object {
-        fun default(): ProcessSettings = ProcessSettings(1000L, listOf(ProcessLabel.PID, ProcessLabel.NAME))
+        fun default(): ProcessSettings = ProcessSettings(3000L, listOf(
+            ProcessLabel.PID,
+            ProcessLabel.NAME,
+            ProcessLabel.CPU_PERCENTAGE,
+            ProcessLabel.MEM_PERCENTAGE,
+))
     }
 
 }

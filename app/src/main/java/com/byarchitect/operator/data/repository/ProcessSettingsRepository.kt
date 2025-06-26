@@ -4,14 +4,15 @@ import com.byarchitect.operator.data.model.ProcessLabel
 
 class ProcessSettingsRepository {
      fun getRefreshRate(): Long {
-        return 1000L
+        return 3000L
     }
 
      fun getLabels(): List<ProcessLabel> {
         return listOf(
             ProcessLabel.PID,
+            ProcessLabel.NAME,
             ProcessLabel.CPU_PERCENTAGE,
-            ProcessLabel.NAME
+            ProcessLabel.MEM_PERCENTAGE,
         )
     }
 }

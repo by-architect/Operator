@@ -7,5 +7,4 @@ data class ProcessListState(
     val isLoading: Boolean = false,
     val processes: List<Map<ProcessLabel, String>> = emptyList(),
     val error: Error? = null
-) {
-}
+)
