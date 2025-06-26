@@ -19,7 +19,7 @@ import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.system.SystemFetcher
-import com.byarchitect.operator.presentation.process.state.ProcessViewModel
+import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
 
 

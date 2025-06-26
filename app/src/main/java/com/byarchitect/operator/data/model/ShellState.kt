@@ -1,4 +1,4 @@
-package com.byarchitect.operator.presentation.process.state
+package com.byarchitect.operator.data.model
 
 import com.byarchitect.operator.common.model.Error
 
