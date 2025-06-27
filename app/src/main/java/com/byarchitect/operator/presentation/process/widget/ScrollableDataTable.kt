@@ -183,7 +183,7 @@ fun ScrollableDataTable(
                         selectedPID = null
                     }
                 ) {
-                    Text(text = stringResource(R.string.kill))
+                    Text(text = stringResource(R.string.exit))
                 }
             }
         }
