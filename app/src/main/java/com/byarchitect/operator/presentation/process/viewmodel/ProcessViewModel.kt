@@ -41,7 +41,7 @@ data class ProcessViewModel @Inject constructor(
     private val _refreshInterval = MutableStateFlow(ProcessSettings.default().refreshRate)
     val refreshInterval: StateFlow<Long> = _refreshInterval.asStateFlow()
 
-    private val _sortOrder = MutableStateFlow(ProcessSortState(ProcessLabel.PID, isAscending = true))
+    private val _sortOrder = MutableStateFlow(ProcessSortState(ProcessLabel.CPU_PERCENTAGE, isAscending = false))
     val sortOrder: StateFlow<ProcessSortState> = _sortOrder.asStateFlow()
 
     private val _uiState = MutableStateFlow(ProcessListState())
