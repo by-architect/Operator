@@ -7,5 +7,5 @@ data class ProcessListState(
     val processes: List<Map<ProcessLabel, String>> = emptyList(),
     val sortBy: ProcessLabel = ProcessLabel.PID,
     val ascending: Boolean = false,
-    val error: Error? = null
+    val error: Error? = null,
 )

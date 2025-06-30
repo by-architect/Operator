@@ -10,7 +10,7 @@ import com.byarchitect.operator.common.util.logTest
 data class Error(
     @StringRes val messageResource: Int,
     val exception: Exception?,
-) {
+): Throwable(){
 
 
     init {

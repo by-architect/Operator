@@ -20,6 +20,7 @@ import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
+import com.byarchitect.operator.presentation.process.widget.AnalyzeWidget
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
 
 
@@ -44,6 +45,7 @@ fun ProcessScreen(
             val uiState by viewModel.uiState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
             val processLabelList by viewModel.processLabels.collectAsState()
+            val totalProcessUsage =  viewModel.totalProcessUsageStack
 
 
             when {
@@ -65,7 +67,10 @@ fun ProcessScreen(
                     }
 
                     else -> {
-                        ScrollableDataTable(processLabelList = processLabelList, data = uiState.processes, viewModel = viewModel)
+                        Column {
+                            AnalyzeWidget(totalProcessUsage)
+                            ScrollableDataTable(processLabelList = processLabelList, data = uiState.processes, viewModel = viewModel)
+                        }
                     }
                 }
             }

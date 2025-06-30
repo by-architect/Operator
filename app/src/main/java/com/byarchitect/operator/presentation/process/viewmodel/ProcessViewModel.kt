@@ -10,6 +10,7 @@ import com.byarchitect.operator.data.model.ProcessListState
 import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.model.ProcessSortState
 import com.byarchitect.operator.data.model.ShellState
+import com.byarchitect.operator.data.model.TotalProcessUsage
 import com.byarchitect.operator.data.repository.ProcessSettingsHandler
 import com.byarchitect.operator.data.system.SystemFetcher
 import jakarta.inject.Inject
@@ -46,6 +47,9 @@ data class ProcessViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(ProcessListState())
     val uiState: StateFlow<ProcessListState> = _uiState.asStateFlow()
+
+
+    val totalProcessUsageStack = mutableListOf<TotalProcessUsage>()
 
     private var refreshJob: Job? = null
 
@@ -133,10 +137,19 @@ data class ProcessViewModel @Inject constructor(
             }.collect()
     }
 
+    private suspend fun refreshTotalProcessUsage() {
+        systemFetcher.getTotalProcessUsage().onEach { resource ->
+            if (resource is Resource.Success && resource.data != null) {
+                totalProcessUsageStack.add(resource.data)
+            }
+        }.collect()
+    }
+
     private fun startPeriodicRefresh(processLabelList: List<ProcessLabel>, intervalMilliseconds: Long, sortOrder: ProcessSortState) {
         refreshJob = viewModelScope.launch {
             while (isActive) {
                 refreshProcessList(processLabelList, sortOrder)
+                refreshTotalProcessUsage()
                 delay(intervalMilliseconds)
             }
         }
