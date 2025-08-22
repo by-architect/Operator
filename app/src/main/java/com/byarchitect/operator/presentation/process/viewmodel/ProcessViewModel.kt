@@ -109,18 +109,15 @@ data class ProcessViewModel @Inject constructor(
 
 
     private suspend fun refreshProcessList(processLabelList: List<ProcessLabel>, sortOrder: ProcessSortState, searchQuery: String) {
-        systemFetcher.getProcessList(processLabelList)
+        systemFetcher.getProcessList(processLabelList, sortOrder, searchQuery)
             .onEach { resource ->
                 _uiState.value = when (resource) {
                     is Resource.Loading -> _uiState.value.copy(isLoading = true)
                     is Resource.Success -> {
                         val processes: List<Map<ProcessLabel, String>> = resource.data ?: emptyList()
-                        val filteredProcesses = if (searchQuery.isNotEmpty()) {
-                            processes.filter { it.values.any { value -> value.contains(searchQuery, ignoreCase = true) } }
-                        } else processes
-                        val sortedProcesses = if (sortOrder.isAscending) filteredProcesses.sortedBy { row ->
+                        val sortedProcesses = if (sortOrder.isAscending) processes.sortedBy { row ->
                             row[sortOrder.label]?.toFloatOrNull() ?: 0f
-                        } else filteredProcesses.sortedByDescending { row ->
+                        } else processes.sortedByDescending { row ->
                             row[sortOrder.label]?.toFloatOrNull() ?: 0f
                         }
                         _uiState.value.copy(

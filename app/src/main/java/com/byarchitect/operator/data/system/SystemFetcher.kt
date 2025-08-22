@@ -4,6 +4,7 @@ import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.common.util.test
 import com.byarchitect.operator.data.model.ProcessLabel
+import com.byarchitect.operator.data.model.ProcessSortState
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -40,19 +41,48 @@ class SystemFetcher() {
 
     }
 
-    fun getProcessList(labels: List<ProcessLabel>): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
+    fun getProcessList(
+        labels: List<ProcessLabel>,
+        sortOrder: ProcessSortState,
+        searchQuery: String
+    ): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
         emit(Resource.Loading())
         try {
             val labelsAsString = labels.joinToString(",") { it.label }
             val data = Shell.cmd("ps -A -o $labelsAsString ").exec().out.toMutableList()
             test = data
             val dataLines = data.drop(1)
-            val processListMap: List<Map<ProcessLabel, String>> = dataLines
-                .filter { it.isNotBlank() }
-                .map { line ->
+            val processListMap: ArrayList<Map<ProcessLabel, String>> = ArrayList()
+            if (searchQuery.isNotEmpty()) {
+                for (line in dataLines) {
+                    if (line.isBlank() || !line.contains(searchQuery, ignoreCase = true)) continue
                     val values = line.trim().replace("[", "").replace("]", "").split(Regex("\\s+"), labels.size)
-                    labels.zip(values).toMap()
+                    val processMap = HashMap<ProcessLabel, String>()
+                    for (i in labels.indices) {
+                        processMap[labels[i]] = values[i]
+                    }
+                    processListMap.add(processMap)
                 }
+            } else {
+                for (line in dataLines) {
+                    if (line.isBlank()) continue
+                    val values = line.trim().replace("[", "").replace("]", "").split(Regex("\\s+"), labels.size)
+                    val processMap = HashMap<ProcessLabel, String>()
+                    for (i in labels.indices) {
+                        processMap[labels[i]] = values[i]
+                    }
+                    processListMap.add(processMap)
+                }
+            }
+            /*
+                        val processListMap: List<Map<ProcessLabel, String>> = dataLines
+                            .filter { it.isNotBlank() }
+                            .map { line ->
+                                val values = line.trim().replace("[", "").replace("]", "").split(Regex("\\s+"), labels.size)
+                                labels.zip(values).toMap()
+                            }
+            */
+            processListMap
             emit(Resource.Success(processListMap))
         } catch (e: Exception) {
             emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
