@@ -15,18 +15,18 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 
 @Composable
 fun SearchBarRow(
     viewModel: ProcessViewModel,
+    focusManager: FocusManager,
     searchValue: String,
 ) {
 
-    val focusManager = LocalFocusManager.current
 
     Row(modifier = Modifier
         .fillMaxWidth(0.9f)

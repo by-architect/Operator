@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,6 +43,7 @@ fun ProcessScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            val focusManager = LocalFocusManager.current
 
             val uiState by viewModel.uiState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
@@ -69,9 +71,9 @@ fun ProcessScreen(
 
                     else -> {
                         Box(Modifier.height(12.dp))
-                        SearchBarRow( viewModel = viewModel, searchValue = searchQuery)
+                        SearchBarRow( viewModel = viewModel,focusManager = focusManager, searchValue = searchQuery)
                         Box(modifier = Modifier.height(14.dp))
-                        ScrollableDataTable(processLabelList = processLabelList, data = uiState.processes, viewModel = viewModel)
+                        ScrollableDataTable(processLabelList = processLabelList, data = uiState.processes,focusManager = focusManager, viewModel = viewModel)
                     }
                 }
             }

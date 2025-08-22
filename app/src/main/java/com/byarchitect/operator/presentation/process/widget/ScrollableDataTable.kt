@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +48,7 @@ fun ScrollableDataTable(
     processLabelList: List<ProcessLabel>,
     data: List<Map<ProcessLabel, String>>,
     modifier: Modifier = Modifier,
+    focusManager: FocusManager,
     viewModel: ProcessViewModel
 ) {
 
@@ -115,6 +117,7 @@ fun ScrollableDataTable(
                             selectedPID = rowPID
                             selectedLabel = row[ProcessLabel.NAME]
                         }
+                        focusManager.clearFocus()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
