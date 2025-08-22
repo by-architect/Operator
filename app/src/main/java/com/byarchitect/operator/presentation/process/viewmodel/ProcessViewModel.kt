@@ -115,11 +115,18 @@ data class ProcessViewModel @Inject constructor(
                     is Resource.Loading -> _uiState.value.copy(isLoading = true)
                     is Resource.Success -> {
                         val processes: List<Map<ProcessLabel, String>> = resource.data ?: emptyList()
-                        val sortedProcesses = if (sortOrder.isAscending) processes.sortedBy { row ->
-                            row[sortOrder.label]?.toFloatOrNull() ?: 0f
-                        } else processes.sortedByDescending { row ->
-                            row[sortOrder.label]?.toFloatOrNull() ?: 0f
-                        }
+                        val sortedProcesses = if (sortOrder.label.isNumber)
+                            if (sortOrder.isAscending) processes.sortedBy { row ->
+                                row[sortOrder.label]?.toFloatOrNull() ?: 0f
+                            } else processes.sortedByDescending { row ->
+                                row[sortOrder.label]?.toFloatOrNull() ?: 0f
+                            }
+                        else
+                            if (sortOrder.isAscending) processes.sortedBy { row ->
+                                row[sortOrder.label]
+                            } else processes.sortedByDescending { row ->
+                                row[sortOrder.label]
+                            }
                         _uiState.value.copy(
                             isLoading = false,
                             processes = sortedProcesses,
