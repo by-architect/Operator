@@ -1,8 +1,9 @@
 package com.byarchitect.operator.presentation.process.screen
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Error
@@ -21,6 +23,7 @@ import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
+import com.byarchitect.operator.presentation.process.widget.SearchBarRow
 
 
 @Composable
@@ -36,7 +39,6 @@ fun ProcessScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -44,6 +46,7 @@ fun ProcessScreen(
             val uiState by viewModel.uiState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
             val processLabelList by viewModel.processLabels.collectAsState()
+            val searchQuery by viewModel.searchQuery.collectAsState()
 
 
             when {
@@ -65,6 +68,9 @@ fun ProcessScreen(
                     }
 
                     else -> {
+                        Box(Modifier.height(12.dp))
+                        SearchBarRow( viewModel = viewModel, searchValue = searchQuery)
+                        Box(modifier = Modifier.height(14.dp))
                         ScrollableDataTable(processLabelList = processLabelList, data = uiState.processes, viewModel = viewModel)
                     }
                 }

@@ -6,9 +6,9 @@ import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
-import com.byarchitect.operator.data.model.ProcessListState
 import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.model.ProcessSortState
+import com.byarchitect.operator.data.model.ProcessUIState
 import com.byarchitect.operator.data.model.ShellState
 import com.byarchitect.operator.data.repository.ProcessSettingsHandler
 import com.byarchitect.operator.data.system.SystemFetcher
@@ -44,8 +44,11 @@ data class ProcessViewModel @Inject constructor(
     private val _sortOrder = MutableStateFlow(ProcessSortState(ProcessLabel.CPU_PERCENTAGE, isAscending = false))
     val sortOrder: StateFlow<ProcessSortState> = _sortOrder.asStateFlow()
 
-    private val _uiState = MutableStateFlow(ProcessListState())
-    val uiState: StateFlow<ProcessListState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ProcessUIState())
+    val uiState: StateFlow<ProcessUIState> = _uiState.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     private var refreshJob: Job? = null
 
@@ -67,11 +70,17 @@ data class ProcessViewModel @Inject constructor(
 
     private fun setupListRefresh() {
 
-        combine(shellState, refreshInterval, processLabels, sortOrder) { shellState, refreshInterval, processLabels, sortOrder ->
+        combine(
+            shellState,
+            refreshInterval,
+            processLabels,
+            sortOrder,
+            searchQuery
+        ) { shellState, refreshInterval, processLabels, sortOrder, searchQuery ->
             if (shellState.error != null) {
                 pauseRefresh()
             } else {
-                handleRefreshConfigChange(processLabels, refreshInterval, sortOrder)
+                handleRefreshConfigChange(processLabels, refreshInterval, sortOrder, searchQuery)
             }
         }.launchIn(viewModelScope)
     }
@@ -99,19 +108,21 @@ data class ProcessViewModel @Inject constructor(
     }
 
 
-    private suspend fun refreshProcessList(processLabelList: List<ProcessLabel>, sortOrder: ProcessSortState) {
+    private suspend fun refreshProcessList(processLabelList: List<ProcessLabel>, sortOrder: ProcessSortState, searchQuery: String) {
         systemFetcher.getProcessList(processLabelList)
             .onEach { resource ->
                 _uiState.value = when (resource) {
                     is Resource.Loading -> _uiState.value.copy(isLoading = true)
                     is Resource.Success -> {
-                        val processes: List<Map<ProcessLabel, String>> = resource.data ?: emptyList();
-                        val sortedProcesses = if (sortOrder.isAscending) processes.sortedBy { row ->
+                        val processes: List<Map<ProcessLabel, String>> = resource.data ?: emptyList()
+                        val filteredProcesses = if (searchQuery.isNotEmpty()) {
+                            processes.filter { it.values.any { value -> value.contains(searchQuery, ignoreCase = true) } }
+                        } else processes
+                        val sortedProcesses = if (sortOrder.isAscending) filteredProcesses.sortedBy { row ->
                             row[sortOrder.label]?.toFloatOrNull() ?: 0f
-                        } else processes.sortedByDescending { row ->
+                        } else filteredProcesses.sortedByDescending { row ->
                             row[sortOrder.label]?.toFloatOrNull() ?: 0f
                         }
-
                         _uiState.value.copy(
                             isLoading = false,
                             processes = sortedProcesses,
@@ -133,19 +144,29 @@ data class ProcessViewModel @Inject constructor(
             }.collect()
     }
 
-    private fun startPeriodicRefresh(processLabelList: List<ProcessLabel>, intervalMilliseconds: Long, sortOrder: ProcessSortState) {
+    private fun startPeriodicRefresh(
+        processLabelList: List<ProcessLabel>,
+        intervalMilliseconds: Long,
+        sortOrder: ProcessSortState,
+        searchQuery: String
+    ) {
         refreshJob = viewModelScope.launch {
             while (isActive) {
-                refreshProcessList(processLabelList, sortOrder)
+                refreshProcessList(processLabelList, sortOrder, searchQuery)
                 delay(intervalMilliseconds)
             }
         }
     }
 
-    private fun handleRefreshConfigChange(processLabelList: List<ProcessLabel>, refreshInterval: Long, sortOrder: ProcessSortState) {
+    private fun handleRefreshConfigChange(
+        processLabelList: List<ProcessLabel>,
+        refreshInterval: Long,
+        sortOrder: ProcessSortState,
+        searchQuery: String
+    ) {
         refreshJob?.cancel()
 
-        startPeriodicRefresh(processLabelList, refreshInterval, sortOrder)
+        startPeriodicRefresh(processLabelList, refreshInterval, sortOrder, searchQuery)
     }
 
 
@@ -153,7 +174,7 @@ data class ProcessViewModel @Inject constructor(
         if (refreshJob != null)
             refreshJob?.start()
         else
-            startPeriodicRefresh(_processLabels.value, _refreshInterval.value, _sortOrder.value)
+            startPeriodicRefresh(_processLabels.value, _refreshInterval.value, _sortOrder.value, searchQuery.value)
     }
 
     fun pauseRefresh() {
@@ -172,6 +193,10 @@ data class ProcessViewModel @Inject constructor(
         } else {
             _sortOrder.value = sortOrder.copy(label = processLabel)
         }
+    }
+
+    fun searchProcess(query: String) {
+        _searchQuery.value = query
     }
 
     fun updateProcessLabels(labels: List<ProcessLabel>) {

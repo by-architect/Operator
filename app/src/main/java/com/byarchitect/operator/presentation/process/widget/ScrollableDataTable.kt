@@ -50,12 +50,11 @@ fun ScrollableDataTable(
     modifier: Modifier = Modifier,
     viewModel: ProcessViewModel
 ) {
-    if (data.isEmpty()) return
 
     val scrollState = rememberScrollState()
 
     val sortOrderState by viewModel.sortOrder.collectAsState()
-// State to track selected PID
+
     var selectedPID by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = modifier.fillMaxSize()) {
