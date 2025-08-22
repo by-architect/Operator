@@ -3,7 +3,6 @@ package com.byarchitect.operator.presentation.process.widget
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,6 +55,7 @@ fun ScrollableDataTable(
     val sortOrderState by viewModel.sortOrder.collectAsState()
 
     var selectedPID by remember { mutableStateOf<String?>(null) }
+    var selectedLabel by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = modifier.fillMaxSize()) {
 
@@ -107,8 +107,14 @@ fun ScrollableDataTable(
 
                 Card(
                     onClick = {
-                        // Select only one row - toggle if same row, otherwise select new row
-                        selectedPID = if (isSelected) null else rowPID
+                        if (isSelected) {
+                            selectedPID = null
+                            selectedLabel = null
+                        }
+                        else {
+                            selectedPID = rowPID
+                            selectedLabel = row[ProcessLabel.NAME]
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -169,17 +175,19 @@ fun ScrollableDataTable(
             Row(
                 modifier = Modifier
                     .height(60.dp)
+                    .background(color = Color.Black)
                     .fillMaxWidth()
-                    .background(color = Color.Black),
-                horizontalArrangement = Arrangement.End,
+                    .padding(horizontal = 12.dp ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(selectedLabel ?: "", color = Color.White,modifier = Modifier.weight(1f))
                 ElevatedButton(
                     onClick = {
                         selectedPID?.let { pid ->
                             viewModel.killProcess(pid.toInt())
                         }
                         selectedPID = null
+                        selectedLabel = null
                     }
                 ) {
                     Text(text = stringResource(R.string.exit))
