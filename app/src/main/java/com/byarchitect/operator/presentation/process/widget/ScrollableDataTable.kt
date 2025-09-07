@@ -31,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -40,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
+import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 
@@ -48,7 +48,7 @@ fun ScrollableDataTable(
     processLabelList: List<ProcessLabel>,
     data: List<Map<ProcessLabel, String>>,
     modifier: Modifier = Modifier,
-    focusManager: FocusManager,
+    mainScreenSearchScrollManager: ProcessScreenSearchScrollManager,
     viewModel: ProcessViewModel
 ) {
 
@@ -100,18 +100,18 @@ fun ScrollableDataTable(
             }
         }
 
-        // Scrollable Content
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
         ) {
             itemsIndexed(data) { index, row ->
-                val rowPID = row[ProcessLabel.PID] // Assuming ProcessLabel.PID is your PID key
+                val rowPID = row[ProcessLabel.PID]
                 val isSelected = selectedPID == rowPID
 
                 Card(
                     onClick = {
+                        mainScreenSearchScrollManager.hideSearchBar()
                         if (isSelected) {
                             selectedPID = null
                             selectedLabel = null
@@ -120,7 +120,7 @@ fun ScrollableDataTable(
                             selectedPID = rowPID
                             selectedLabel = row[ProcessLabel.NAME]
                         }
-                        focusManager.clearFocus()
+
                     },
                     modifier = Modifier
                         .fillMaxWidth()

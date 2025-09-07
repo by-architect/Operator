@@ -17,22 +17,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.R
-import com.byarchitect.operator.common.constant.AnimationSpecs
+import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
 import com.byarchitect.operator.presentation.process.widget.SearchBarRow
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -43,38 +40,25 @@ fun ProcessScreen(
     val viewModel: ProcessViewModel = viewModel {
         ProcessViewModel(repository)
     }
-    val scrollState = rememberScrollState(Int.MAX_VALUE)
-    val coroutineScope = rememberCoroutineScope()
-    val nestedScrollSettings = object : NestedScrollConnection {
-        override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-            if (scrollState.value <8)
-                return super.onPostFling(consumed, available)
-            if (scrollState.value > 50) {
-                coroutineScope.launch {
-                    scrollState.animateScrollTo(250, animationSpec = AnimationSpecs.containerSlowAnimation)
-                }
-            } else {
-                coroutineScope.launch {
-                    scrollState.animateScrollTo(0, animationSpec = AnimationSpecs.containerAnimation)
-                }
-            }
 
-            return super.onPostFling(consumed, available)
-        }
+    val scrollManager = ProcessScreenSearchScrollManager(
+        viewModel = viewModel,
+        coroutineScope = rememberCoroutineScope(),
+        scrollState = rememberScrollState(Int.MAX_VALUE),
+        focusManager = LocalFocusManager.current
+    )
 
-    }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .nestedScroll(nestedScrollSettings)
-                .verticalScroll(scrollState),
+                .nestedScroll(scrollManager.scrollSettings)
+                .verticalScroll(scrollManager.scrollState),
 
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val focusManager = LocalFocusManager.current
 
             val uiState by viewModel.processState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
@@ -103,12 +87,12 @@ fun ProcessScreen(
 
                     else -> {
                         Box(Modifier.height(12.dp))
-                        SearchBarRow(viewModel = viewModel, focusManager = focusManager, scrollState = scrollState, searchValue = searchQuery)
+                        SearchBarRow(viewModel = viewModel, mainScreenScrollManager = scrollManager, searchValue = searchQuery)
                         Box(modifier = Modifier.height(14.dp))
                         ScrollableDataTable(
                             processLabelList = processLabelList,
                             data = uiState.processes,
-                            focusManager = focusManager,
+                            mainScreenSearchScrollManager = scrollManager,
                             viewModel = viewModel
                         )
                     }

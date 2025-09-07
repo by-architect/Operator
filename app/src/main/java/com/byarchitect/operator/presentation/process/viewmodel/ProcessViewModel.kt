@@ -47,8 +47,6 @@ data class ProcessViewModel @Inject constructor(
     private val _processState = MutableStateFlow(ProcessState())
     val processState: StateFlow<ProcessState> = _processState.asStateFlow()
 
-    private val _showSearchBar = MutableStateFlow(false)
-    val showSearchBar: StateFlow<Boolean> = _showSearchBar.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -205,9 +203,8 @@ data class ProcessViewModel @Inject constructor(
     fun searchProcess(query: String) {
         _searchQuery.value = query
     }
-    fun closeSearchBar() {
+    fun clearSearch() {
         _searchQuery.value = ""
-        _showSearchBar.value = false
     }
 
     fun updateProcessLabels(labels: List<ProcessLabel>) {

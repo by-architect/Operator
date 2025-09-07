@@ -1,6 +1,5 @@
 package com.byarchitect.operator.presentation.process.widget
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,23 +17,19 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
-import com.byarchitect.operator.common.constant.AnimationSpecs
+import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBarRow(
     viewModel: ProcessViewModel,
-    focusManager: FocusManager,
-    scrollState: ScrollState,
+    mainScreenScrollManager: ProcessScreenSearchScrollManager,
     searchValue: String,
 ) {
 
@@ -45,7 +40,6 @@ fun SearchBarRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        val coroutineScope = rememberCoroutineScope()
         IconButton(
             onClick = {
 /*
@@ -91,15 +85,8 @@ fun SearchBarRow(
         )
         IconButton(
             onClick = {
-                viewModel.closeSearchBar()
-                focusManager.clearFocus()
-                coroutineScope.launch {
-                    scrollState.animateScrollTo(
-                        scrollState.maxValue,
-                        animationSpec = AnimationSpecs.containerAnimation
-                    )
+                mainScreenScrollManager.closeSearchBar()
 
-                }
             }) {
             Icon(
                 modifier = Modifier.size(32.dp),
