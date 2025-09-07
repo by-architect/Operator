@@ -8,7 +8,7 @@ import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.model.ProcessSortState
-import com.byarchitect.operator.data.model.ProcessUIState
+import com.byarchitect.operator.data.model.ProcessState
 import com.byarchitect.operator.data.model.ShellState
 import com.byarchitect.operator.data.repository.ProcessSettingsHandler
 import com.byarchitect.operator.data.system.SystemFetcher
@@ -44,8 +44,11 @@ data class ProcessViewModel @Inject constructor(
     private val _sortOrder = MutableStateFlow(ProcessSortState(ProcessLabel.CPU_PERCENTAGE, isAscending = false))
     val sortOrder: StateFlow<ProcessSortState> = _sortOrder.asStateFlow()
 
-    private val _uiState = MutableStateFlow(ProcessUIState())
-    val uiState: StateFlow<ProcessUIState> = _uiState.asStateFlow()
+    private val _processState = MutableStateFlow(ProcessState())
+    val processState: StateFlow<ProcessState> = _processState.asStateFlow()
+
+    private val _showSearchBar = MutableStateFlow(false)
+    val showSearchBar: StateFlow<Boolean> = _showSearchBar.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -111,8 +114,8 @@ data class ProcessViewModel @Inject constructor(
     private suspend fun refreshProcessList(processLabelList: List<ProcessLabel>, sortOrder: ProcessSortState, searchQuery: String) {
         systemFetcher.getProcessList(processLabelList, sortOrder, searchQuery)
             .onEach { resource ->
-                _uiState.value = when (resource) {
-                    is Resource.Loading -> _uiState.value.copy(isLoading = true)
+                _processState.value = when (resource) {
+                    is Resource.Loading -> _processState.value.copy(isLoading = true)
                     is Resource.Success -> {
                         val processes: List<Map<ProcessLabel, String>> = resource.data ?: emptyList()
                         val sortedProcesses = if (sortOrder.label.isNumber)
@@ -127,21 +130,21 @@ data class ProcessViewModel @Inject constructor(
                             } else processes.sortedByDescending { row ->
                                 row[sortOrder.label]
                             }
-                        _uiState.value.copy(
+                        _processState.value.copy(
                             isLoading = false,
                             processes = sortedProcesses,
                             error = null
                         )
                     }
 
-                    is Resource.Error -> _uiState.value.copy(
+                    is Resource.Error -> _processState.value.copy(
                         isLoading = false,
                         error = resource.error
                     )
                 }
             }
             .catch { e ->
-                _uiState.value = _uiState.value.copy(
+                _processState.value = _processState.value.copy(
                     isLoading = false,
                     error = Error(messageResource = R.string.refresh_error, exception = Exception(e))
                 )
@@ -201,6 +204,10 @@ data class ProcessViewModel @Inject constructor(
 
     fun searchProcess(query: String) {
         _searchQuery.value = query
+    }
+    fun closeSearchBar() {
+        _searchQuery.value = ""
+        _showSearchBar.value = false
     }
 
     fun updateProcessLabels(labels: List<ProcessLabel>) {

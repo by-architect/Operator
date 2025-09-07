@@ -45,7 +45,7 @@ fun ProcessScreen(
 
             val focusManager = LocalFocusManager.current
 
-            val uiState by viewModel.uiState.collectAsState()
+            val uiState by viewModel.processState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
             val processLabelList by viewModel.processLabels.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
