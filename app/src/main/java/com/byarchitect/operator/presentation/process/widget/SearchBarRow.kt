@@ -1,12 +1,16 @@
 package com.byarchitect.operator.presentation.process.widget
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -14,46 +18,64 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.byarchitect.operator.R
+import com.byarchitect.operator.common.constant.AnimationSpecs
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchBarRow(
     viewModel: ProcessViewModel,
     focusManager: FocusManager,
+    scrollState: ScrollState,
     searchValue: String,
 ) {
 
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
-    Row(modifier = Modifier
-        .fillMaxWidth(0.9f)
-        .height(55.dp), horizontalArrangement = Arrangement.Center) {
+        val coroutineScope = rememberCoroutineScope()
+        IconButton(
+            onClick = {
+/*
+                viewModel.closeSearchBar()
+                focusManager.clearFocus()
+                coroutineScope.launch {
+                    scrollState.animateScrollTo(
+                        scrollState.maxValue,
+                        animationSpec = AnimationSpecs.containerAnimation
+                    )
+
+                }
+*/
+            }) {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                imageVector = Icons.Default.Settings,
+                tint = Color.Gray,
+                contentDescription = stringResource(R.string.settings),
+            )
+        }
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.height(56.dp),
             value = searchValue,
             onValueChange = { viewModel.searchProcess(it) },
-            placeholder = { Text("Filter", color = Color.Black) },
+            placeholder = { Text(text = stringResource(R.string.filter), color = Color.Black) },
             textStyle = LocalTextStyle.current.copy(color = Color.Black),
-
             singleLine = true,
-            shape = OutlinedTextFieldDefaults.shape,
+            shape = RoundedCornerShape(32.dp),
             trailingIcon = {
-
-                if(searchValue.isNotEmpty())
-                IconButton(
-                    onClick = {
-                        viewModel.searchProcess("")
-                        focusManager.clearFocus()
-                    }) {
-                    Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Clear",
-                    )
-                }
             },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
@@ -67,30 +89,26 @@ fun SearchBarRow(
                 unfocusedBorderColor = Color.Gray
             ),
         )
+        IconButton(
+            onClick = {
+                viewModel.closeSearchBar()
+                focusManager.clearFocus()
+                coroutineScope.launch {
+                    scrollState.animateScrollTo(
+                        scrollState.maxValue,
+                        animationSpec = AnimationSpecs.containerAnimation
+                    )
 
-        /*
-                TextField(
-                    value = searchValue,
-                    onValueChange = { viewModel.searchProcess(it) },
-                    placeholder = { Text("Filter", color = Color.Black) },
-                    textStyle = LocalTextStyle.current.copy(color = Color.Black),
-                    singleLine = true,
-                    shape = RectangleShape,
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black,
-                        cursorColor = Color.Black,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        errorIndicatorColor = Color.Transparent
-                    ),
-                )
-        */
+                }
+            }) {
+            Icon(
+                modifier = Modifier.size(32.dp),
+                imageVector = Icons.Default.Clear,
+                tint = Color.Gray,
+                contentDescription = stringResource(R.string.exit),
+            )
+        }
     }
+
 
 }

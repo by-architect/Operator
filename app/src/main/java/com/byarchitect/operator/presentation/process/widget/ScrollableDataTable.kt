@@ -6,7 +6,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +59,10 @@ fun ScrollableDataTable(
     var selectedPID by remember { mutableStateOf<String?>(null) }
     var selectedLabel by remember { mutableStateOf<String?>(null) }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    //val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
+    Column(modifier = modifier.fillMaxWidth().height(screenHeight)) {
 
         Box(
             modifier = Modifier

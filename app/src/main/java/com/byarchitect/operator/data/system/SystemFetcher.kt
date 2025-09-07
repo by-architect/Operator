@@ -2,7 +2,6 @@ package com.byarchitect.operator.data.system
 
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
-import com.byarchitect.operator.common.util.test
 import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.model.ProcessSortState
 import com.topjohnwu.superuser.Shell
@@ -50,7 +49,6 @@ class SystemFetcher() {
         try {
             val labelsAsString = labels.joinToString(",") { it.label }
             val data = Shell.cmd("ps -A -o $labelsAsString ").exec().out.toMutableList()
-            test = data
             val dataLines = data.drop(1)
             val processListMap: ArrayList<Map<ProcessLabel, String>> = ArrayList()
             if (searchQuery.isNotEmpty()) {
@@ -94,7 +92,6 @@ class SystemFetcher() {
         emit(Resource.Loading())
         try {
             val output = Shell.cmd("kill $pid").exec().out
-            test = output
         } catch (e: Exception) {
             emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
         }

@@ -10,4 +10,5 @@
     <string name="cpu">Cpu</string>
     <string name="kill">Kill</string>
     <string name="exit">Exit</string>
+    <string name="filter">Filter</string>
 </resources>
