@@ -59,7 +59,9 @@ fun ScrollableDataTable(
 
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
-    Column(modifier = modifier.fillMaxWidth().height(screenHeight)) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .height(screenHeight)) {
 
         Box(
             modifier = Modifier
@@ -74,7 +76,7 @@ fun ScrollableDataTable(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(scrollState)
-                    .padding(horizontal = 20.dp , vertical = 16.dp),
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
@@ -132,15 +134,19 @@ fun ScrollableDataTable(
         if (selectedPID != null) {
             Row(
                 modifier = Modifier
-                    .height(60.dp)
-                    .background(color = MaterialTheme.colorScheme.surfaceVariant)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     selectedLabel ?: "",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(1f).padding(start = 20.dp)
+                    modifier = Modifier.weight(1f)
                 )
                 ElevatedButton(
                     onClick = {
@@ -164,7 +170,6 @@ fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? 
         modifier = modifier
             .height(20.dp),
         contentAlignment = Alignment.Center,
-
 
         ) {
         Row {

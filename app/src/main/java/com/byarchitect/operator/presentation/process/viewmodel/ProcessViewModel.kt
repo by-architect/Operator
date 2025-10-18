@@ -47,7 +47,6 @@ data class ProcessViewModel @Inject constructor(
     private val _processState = MutableStateFlow(ProcessState())
     val processState: StateFlow<ProcessState> = _processState.asStateFlow()
 
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
