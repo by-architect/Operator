@@ -19,19 +19,13 @@ class ProcessScreenSearchScrollManager(
         viewModel.clearSearch()
         focusManager.clearFocus()
         coroutineScope.launch {
-            scrollState.animateScrollTo(
-                scrollState.maxValue,
-                animationSpec = AnimationSpecs.containerAnimation
-            )
+            scrollState.scrollTo(scrollState.maxValue)
         }
     }
     fun hideSearchBar(){
         focusManager.clearFocus()
         coroutineScope.launch {
-            scrollState.animateScrollTo(
-                scrollState.maxValue,
-                animationSpec = AnimationSpecs.containerAnimation
-            )
+            scrollState.scrollTo(scrollState.maxValue)
         }
     }
 
