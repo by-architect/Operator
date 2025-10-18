@@ -54,8 +54,8 @@ object Colors {
     val IconTint = Color(0xFF33691E) // Dark olive green
 
     // Process-specific colors - Green shades
-    val CpuColor = Color(0xFF4CAF50) // Bright green
-    val MemoryColor = Color(0xFF689F38) // Lime green
+    val CpuColor = Color(0xFF2196F3) // Vibrant bright green
+    val MemoryColor = Color(0xFFEF6C00) // Active lime green
     val PidColor = Color(0xFF558B2F) // Medium green
 
     // Divider - Green shade

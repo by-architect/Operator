@@ -91,7 +91,6 @@ fun ProcessScreen(
                             Column() {
                                 Box(Modifier.height(12.dp))
                                 SearchBarRow(viewModel = viewModel, mainScreenScrollManager = scrollManager, searchValue = searchQuery)
-                                Box(modifier = Modifier.height(14.dp))
                                 ScrollableDataTable(
                                     processLabelList = processLabelList,
                                     data = uiState.processes,
