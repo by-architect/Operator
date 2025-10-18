@@ -9,6 +9,7 @@ import com.byarchitect.operator.data.model.ProcessLabel
 import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.model.ProcessSortState
 import com.byarchitect.operator.data.model.ProcessState
+import com.byarchitect.operator.data.model.SelectedProcessModel
 import com.byarchitect.operator.data.model.ShellState
 import com.byarchitect.operator.data.repository.ProcessSettingsHandler
 import com.byarchitect.operator.data.system.SystemFetcher
@@ -49,6 +50,9 @@ data class ProcessViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    private val _selectedProcess = MutableStateFlow<SelectedProcessModel?>(null)
+    val selectedProcess: StateFlow<SelectedProcessModel?> = _selectedProcess.asStateFlow()
 
     private var refreshJob: Job? = null
 
@@ -214,5 +218,11 @@ data class ProcessViewModel @Inject constructor(
         systemFetcher.killProcess(pid).launchIn(viewModelScope)
     }
 
+    fun selectProcess(process: SelectedProcessModel) {
+        _selectedProcess.value = process
+    }
+    fun deselectProcess() {
+        _selectedProcess.value = null
+    }
 
 }

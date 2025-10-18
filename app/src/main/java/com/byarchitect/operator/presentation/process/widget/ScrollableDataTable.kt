@@ -17,26 +17,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.byarchitect.operator.R
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.data.model.ProcessLabel
+import com.byarchitect.operator.data.model.SelectedProcessModel
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 
 @Composable
@@ -45,6 +40,7 @@ fun ScrollableDataTable(
     data: List<Map<ProcessLabel, String>>,
     modifier: Modifier = Modifier,
     mainScreenSearchScrollManager: ProcessScreenSearchScrollManager,
+    selectedProcess: SelectedProcessModel?,
     viewModel: ProcessViewModel
 ) {
 
@@ -52,16 +48,15 @@ fun ScrollableDataTable(
 
     val sortOrderState by viewModel.sortOrder.collectAsState()
 
-    val processLabelList = listOf(ProcessLabel.NAME,  ProcessLabel.CPU_PERCENTAGE, ProcessLabel.MEM_PERCENTAGE,ProcessLabel.PID)
-
-    var selectedPID by remember { mutableStateOf<String?>(null) }
-    var selectedLabel by remember { mutableStateOf<String?>(null) }
+    val processLabelList = listOf(ProcessLabel.NAME, ProcessLabel.CPU_PERCENTAGE, ProcessLabel.MEM_PERCENTAGE, ProcessLabel.PID)
 
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .height(screenHeight)) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(screenHeight)
+    ) {
 
         Box(
             modifier = Modifier
@@ -79,7 +74,6 @@ fun ScrollableDataTable(
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
 
 
                 processLabelList.forEachIndexed { index, header ->
@@ -112,7 +106,8 @@ fun ScrollableDataTable(
         ) {
             itemsIndexed(data) { index, row ->
                 val rowPID = row[ProcessLabel.PID]
-                val isSelected = selectedPID == rowPID
+                val rowLabel = row[ProcessLabel.NAME]
+                val isSelected = selectedProcess?.pid == rowPID
 
                 ProcessItemCard(
                     processData = row,
@@ -120,49 +115,21 @@ fun ScrollableDataTable(
                     onClick = {
                         mainScreenSearchScrollManager.hideSearchBar()
                         if (isSelected) {
-                            selectedPID = null
-                            selectedLabel = null
+                            viewModel.deselectProcess()
                         } else {
-                            selectedPID = rowPID
-                            selectedLabel = row[ProcessLabel.NAME]
+                            if (rowPID != null && rowLabel != null)
+                                viewModel.selectProcess(SelectedProcessModel(rowPID, rowLabel))
                         }
                     }
                 )
             }
-        }
-
-        if (selectedPID != null) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.surfaceVariant,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    selectedLabel ?: "",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(1f)
-                )
-                ElevatedButton(
-                    onClick = {
-                        selectedPID?.let { pid ->
-                            viewModel.killProcess(pid.toInt())
-                        }
-                        selectedPID = null
-                        selectedLabel = null
-                    }
-                ) {
-                    Text(text = stringResource(R.string.exit))
-                }
+            item {
+                Box(modifier = Modifier.height(70.dp))
             }
         }
     }
 }
+
 
 @Composable
 fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? = null) {
@@ -183,12 +150,12 @@ fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? 
                 textAlign = TextAlign.Center
             )
             if (ascending != null)
-            Icon(
-                modifier = Modifier.size(32.dp),
-                imageVector = if (ascending ) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                Icon(
+                    modifier = Modifier.size(32.dp),
+                    imageVector = if (ascending) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
         }
     }
 }

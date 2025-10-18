@@ -30,6 +30,7 @@ import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
 import com.byarchitect.operator.presentation.process.widget.SearchBarRow
+import com.byarchitect.operator.presentation.process.widget.SelectedProcessContainer
 
 
 @Composable
@@ -64,7 +65,7 @@ fun ProcessScreen(
             val shellState by viewModel.shellState.collectAsState()
             val processLabelList by viewModel.processLabels.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
-
+            val selectedProcess by viewModel.selectedProcess.collectAsState()
 
 
             when {
@@ -86,15 +87,23 @@ fun ProcessScreen(
                     }
 
                     else -> {
-                        Box(Modifier.height(12.dp))
-                        SearchBarRow(viewModel = viewModel, mainScreenScrollManager = scrollManager, searchValue = searchQuery)
-                        Box(modifier = Modifier.height(14.dp))
-                        ScrollableDataTable(
-                            processLabelList = processLabelList,
-                            data = uiState.processes,
-                            mainScreenSearchScrollManager = scrollManager,
-                            viewModel = viewModel
-                        )
+                        Box {
+                            Column() {
+                                Box(Modifier.height(12.dp))
+                                SearchBarRow(viewModel = viewModel, mainScreenScrollManager = scrollManager, searchValue = searchQuery)
+                                Box(modifier = Modifier.height(14.dp))
+                                ScrollableDataTable(
+                                    processLabelList = processLabelList,
+                                    data = uiState.processes,
+                                    mainScreenSearchScrollManager = scrollManager,
+                                    selectedProcess = selectedProcess,
+                                    viewModel = viewModel
+                                )
+                            }
+
+                            if (selectedProcess != null)
+                                SelectedProcessContainer(modifier = Modifier.align (Alignment.BottomCenter),viewModel, selectedProcess!!)
+                        }
                     }
                 }
             }
