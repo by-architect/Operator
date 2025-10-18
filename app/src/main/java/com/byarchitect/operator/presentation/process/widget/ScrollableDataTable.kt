@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -28,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,7 +64,11 @@ fun ScrollableDataTable(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color.Black),
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = RoundedCornerShape(8.dp)
+                ),
         ) {
             Row(
                 modifier = Modifier
@@ -129,11 +133,15 @@ fun ScrollableDataTable(
             Row(
                 modifier = Modifier
                     .height(60.dp)
-                    .background(color = Color.Black)
+                    .background(color = MaterialTheme.colorScheme.surfaceVariant)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(selectedLabel ?: "", color = Color.White,modifier = Modifier.weight(1f).padding(start = 20.dp))
+                Text(
+                    selectedLabel ?: "",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f).padding(start = 20.dp)
+                )
                 ElevatedButton(
                     onClick = {
                         selectedPID?.let { pid ->
@@ -166,7 +174,7 @@ fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? 
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
             if (ascending != null)
@@ -174,7 +182,7 @@ fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? 
                 modifier = Modifier.size(32.dp),
                 imageVector = if (ascending ) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = null,
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
