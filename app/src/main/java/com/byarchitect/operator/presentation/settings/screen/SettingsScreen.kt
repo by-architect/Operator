@@ -9,9 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
 import com.byarchitect.operator.presentation.settings.widget.SettingsNumberOptionRow
-import com.byarchitect.operator.presentation.settings.widget.SettingsOptionRow
 import com.byarchitect.operator.presentation.settings.widget.SettingsRow
 
 @Composable
@@ -37,8 +34,6 @@ fun SettingsScreen(
     onNavigateToAbout: () -> Unit = {}
 ) {
     var refreshRate by remember { mutableStateOf("3") }
-    var showNotifications by remember { mutableStateOf(true) }
-    var showSystemProcesses by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -57,19 +52,6 @@ fun SettingsScreen(
             suffix = stringResource(R.string.seconds)
         )
 
-        SettingsOptionRow(
-            label = stringResource(R.string.show_notifications),
-            icon = Icons.Default.Notifications,
-            isChecked = showNotifications,
-            onCheckedChange = { showNotifications = it }
-        )
-
-        SettingsOptionRow(
-            label = stringResource(R.string.show_system_processes),
-            icon = Icons.Default.Settings,
-            isChecked = showSystemProcesses,
-            onCheckedChange = { showSystemProcesses = it }
-        )
 
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 16.dp),
