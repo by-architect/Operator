@@ -28,34 +28,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.byarchitect.operator.R
+import com.byarchitect.operator.data.model.Process
 import com.byarchitect.operator.presentation.ui.theme.Colors
-import com.byarchitect.operator.data.model.ProcessLabel
 
 @Composable
 fun ProcessItemCard(
-    processData: Map<ProcessLabel, String>,
+    process: Process,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val packageName = processData[ProcessLabel.NAME] ?: ""
-    val pid = processData[ProcessLabel.PID] ?: ""
-    val cpuUsage = processData[ProcessLabel.CPU_PERCENTAGE] ?: ""
-    val memUsage = processData[ProcessLabel.MEM_PERCENTAGE] ?: ""
 
     // Get app icon drawable
     val appIcon = try {
-        context.packageManager.getApplicationIcon(packageName)
+        context.packageManager.getApplicationIcon(process.packageName)
     } catch (e: Exception) {
         null
     }
 
     // Get package label
     val packageLabel = try {
-        val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+        val appInfo = context.packageManager.getApplicationInfo(process.packageName, 0)
         context.packageManager.getApplicationLabel(appInfo).toString()
     } catch (e: Exception) {
-        packageName.substringAfterLast(".")
+        process.packageName.substringAfterLast(".")
     }
 
     Card(
@@ -118,7 +114,7 @@ fun ProcessItemCard(
                 // Package Name Column (can drop to next line within column)
                 Box (modifier = Modifier.weight(2f)){
                     Text(
-                        text = packageName,
+                        text = process.packageName,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall,
                         color = Colors.TextSecondary,
@@ -131,7 +127,7 @@ fun ProcessItemCard(
 
                 // CPU Usage Column
                 Text(
-                    text = cpuUsage,
+                    text = process.cpuPercentage.toString(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 16.sp,
@@ -143,7 +139,7 @@ fun ProcessItemCard(
 
                 // Memory Usage Column
                 Text(
-                    text = memUsage,
+                    text = process.memPercentage.toString(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 16.sp,
@@ -157,7 +153,7 @@ fun ProcessItemCard(
 
                 // PID Column
                 Text(
-                    text = pid,
+                    text = process.pid.toString(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = 14.sp,

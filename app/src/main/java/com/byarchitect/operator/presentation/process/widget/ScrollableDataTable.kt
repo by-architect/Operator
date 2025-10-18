@@ -30,17 +30,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
+import com.byarchitect.operator.data.model.Process
 import com.byarchitect.operator.data.model.ProcessLabel
-import com.byarchitect.operator.data.model.SelectedProcessModel
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 
 @Composable
 fun ScrollableDataTable(
-    processLabelList: List<ProcessLabel>,
-    data: List<Map<ProcessLabel, String>>,
+    data: List<Process>,
     modifier: Modifier = Modifier,
     mainScreenSearchScrollManager: ProcessScreenSearchScrollManager,
-    selectedProcess: SelectedProcessModel?,
+    selectedProcess: Process?,
     viewModel: ProcessViewModel
 ) {
 
@@ -104,21 +103,18 @@ fun ScrollableDataTable(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            itemsIndexed(data) { index, row ->
-                val rowPID = row[ProcessLabel.PID]
-                val rowLabel = row[ProcessLabel.NAME]
-                val isSelected = selectedProcess?.pid == rowPID
+            itemsIndexed(data) { index, process ->
+                val isSelected = selectedProcess?.pid == process.pid
 
                 ProcessItemCard(
-                    processData = row,
+                    process = process,
                     isSelected = isSelected,
                     onClick = {
                         mainScreenSearchScrollManager.hideSearchBar()
                         if (isSelected) {
                             viewModel.deselectProcess()
                         } else {
-                            if (rowPID != null && rowLabel != null)
-                                viewModel.selectProcess(SelectedProcessModel(rowPID, rowLabel))
+                            viewModel.selectProcess(process)
                         }
                     }
                 )

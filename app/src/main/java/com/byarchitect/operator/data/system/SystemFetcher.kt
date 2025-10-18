@@ -3,7 +3,6 @@ package com.byarchitect.operator.data.system
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessLabel
-import com.byarchitect.operator.data.model.ProcessSortState
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -42,7 +41,6 @@ class SystemFetcher() {
 
     fun getProcessList(
         labels: List<ProcessLabel>,
-        sortOrder: ProcessSortState,
         searchQuery: String
     ): Flow<Resource<List<Map<ProcessLabel, String>>>> = flow {
         emit(Resource.Loading())

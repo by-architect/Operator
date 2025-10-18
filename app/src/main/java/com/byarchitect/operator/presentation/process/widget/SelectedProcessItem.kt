@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
-import com.byarchitect.operator.data.model.SelectedProcessModel
+import com.byarchitect.operator.data.model.Process
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 
 @Composable
-fun SelectedProcessContainer(modifier: Modifier,viewModel: ProcessViewModel, selectedProcess: SelectedProcessModel) {
+fun SelectedProcessContainer(modifier: Modifier,viewModel: ProcessViewModel, selectedProcess: Process) {
     Row(
         modifier =modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun SelectedProcessContainer(modifier: Modifier,viewModel: ProcessViewModel, sel
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            selectedProcess.label,
+            selectedProcess.packageName,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )

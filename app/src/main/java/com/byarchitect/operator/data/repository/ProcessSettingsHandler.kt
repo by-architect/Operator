@@ -11,9 +11,8 @@ class ProcessSettingsHandler {
     fun getSettings(): Flow<Resource<ProcessSettings>> = flow {
         emit(Resource.Loading())
         try {
-            val labels = repository.getLabels()
             val refreshRate = repository.getRefreshRate()
-            emit(Resource.Success(ProcessSettings(refreshRate, labels)))
+            emit(Resource.Success(ProcessSettings(refreshRate)))
         } catch (e: Exception) {
             emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
         }

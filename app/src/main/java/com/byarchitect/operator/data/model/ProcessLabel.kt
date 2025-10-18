@@ -60,4 +60,14 @@ enum class ProcessLabel(val label: String, val isNumber: Boolean) {
     WCHAN("WCHAN", false),
     WRITE("WRITE", true);
 
+    companion object {
+        fun default(): List<ProcessLabel> {
+            return listOf(
+                ProcessLabel.PID,
+                ProcessLabel.NAME,
+                ProcessLabel.CPU_PERCENTAGE,
+                ProcessLabel.MEM_PERCENTAGE,
+            )
+        }
+    }
 }

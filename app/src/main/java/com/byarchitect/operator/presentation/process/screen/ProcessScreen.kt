@@ -26,6 +26,7 @@ import com.byarchitect.operator.R
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
+import com.byarchitect.operator.data.system.ProcessManager
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
@@ -39,8 +40,9 @@ fun ProcessScreen(
 ) {
 
     val repository = SystemFetcher()
+    val processManager = ProcessManager()
     val viewModel: ProcessViewModel = viewModel {
-        ProcessViewModel(repository)
+        ProcessViewModel(repository,processManager)
     }
 
     val scrollManager = ProcessScreenSearchScrollManager(
@@ -64,7 +66,6 @@ fun ProcessScreen(
 
             val uiState by viewModel.processState.collectAsState()
             val shellState by viewModel.shellState.collectAsState()
-            val processLabelList by viewModel.processLabels.collectAsState()
             val searchQuery by viewModel.searchQuery.collectAsState()
             val selectedProcess by viewModel.selectedProcess.collectAsState()
 
@@ -89,7 +90,7 @@ fun ProcessScreen(
 
                     else -> {
                         Box {
-                            Column() {
+                            Column {
                                 Box(Modifier.height(12.dp))
                                 SearchBarRow(
                                     viewModel = viewModel,
@@ -98,7 +99,6 @@ fun ProcessScreen(
                                     onNavigateToSettings = onNavigateToSettings
                                 )
                                 ScrollableDataTable(
-                                    processLabelList = processLabelList,
                                     data = uiState.processes,
                                     mainScreenSearchScrollManager = scrollManager,
                                     selectedProcess = selectedProcess,
