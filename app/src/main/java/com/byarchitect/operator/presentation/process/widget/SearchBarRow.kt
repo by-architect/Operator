@@ -35,6 +35,7 @@ fun SearchBarRow(
     viewModel: ProcessViewModel,
     mainScreenScrollManager: ProcessScreenSearchScrollManager,
     searchValue: String,
+    onNavigateToSettings: () -> Unit = {}
 ) {
 
     Row(
@@ -60,9 +61,7 @@ fun SearchBarRow(
             contentAlignment = Alignment.Center
         ) {
             IconButton(
-                onClick = {
-                    // Settings action placeholder
-                }
+                onClick = onNavigateToSettings
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),

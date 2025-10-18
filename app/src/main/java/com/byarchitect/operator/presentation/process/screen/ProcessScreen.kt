@@ -35,6 +35,7 @@ import com.byarchitect.operator.presentation.process.widget.SelectedProcessConta
 
 @Composable
 fun ProcessScreen(
+    onNavigateToSettings: () -> Unit = {}
 ) {
 
     val repository = SystemFetcher()
@@ -90,7 +91,12 @@ fun ProcessScreen(
                         Box {
                             Column() {
                                 Box(Modifier.height(12.dp))
-                                SearchBarRow(viewModel = viewModel, mainScreenScrollManager = scrollManager, searchValue = searchQuery)
+                                SearchBarRow(
+                                    viewModel = viewModel,
+                                    mainScreenScrollManager = scrollManager,
+                                    searchValue = searchQuery,
+                                    onNavigateToSettings = onNavigateToSettings
+                                )
                                 ScrollableDataTable(
                                     processLabelList = processLabelList,
                                     data = uiState.processes,
