@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +33,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
@@ -56,11 +52,12 @@ fun ScrollableDataTable(
 
     val sortOrderState by viewModel.sortOrder.collectAsState()
 
+    val processLabelList = listOf(ProcessLabel.NAME,  ProcessLabel.CPU_PERCENTAGE, ProcessLabel.MEM_PERCENTAGE,ProcessLabel.PID)
+
     var selectedPID by remember { mutableStateOf<String?>(null) }
     var selectedLabel by remember { mutableStateOf<String?>(null) }
 
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    //val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
     Column(modifier = modifier.fillMaxWidth().height(screenHeight)) {
 
@@ -73,15 +70,17 @@ fun ScrollableDataTable(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(scrollState)
-                    .padding(16.dp),
+                    .padding(horizontal = 20.dp , vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
+
+
                 processLabelList.forEachIndexed { index, header ->
-                    if (index == 1)
+                    if (index == 0)
                         HeaderBox(
                             header.label, modifier = Modifier
-                                .width(160.dp)
+                                .weight(2f)
                                 .clickable(onClick = {
                                     viewModel.sortProcess(header)
                                 }),
@@ -90,7 +89,7 @@ fun ScrollableDataTable(
                     else
                         HeaderBox(
                             header.label, modifier = Modifier
-                                .width(70.dp)
+                                .weight(1f)
                                 .clickable(onClick = {
                                     viewModel.sortProcess(header)
                                 }),
@@ -109,71 +108,20 @@ fun ScrollableDataTable(
                 val rowPID = row[ProcessLabel.PID]
                 val isSelected = selectedPID == rowPID
 
-                Card(
+                ProcessItemCard(
+                    processData = row,
+                    isSelected = isSelected,
                     onClick = {
                         mainScreenSearchScrollManager.hideSearchBar()
                         if (isSelected) {
                             selectedPID = null
                             selectedLabel = null
-                        }
-                        else {
+                        } else {
                             selectedPID = rowPID
                             selectedLabel = row[ProcessLabel.NAME]
                         }
-
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 1.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected)
-                            Color(0xFFE3F2FD) // Light blue when selected
-                        else
-                            Color(0xFFF5F5F5)
-                    )
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(scrollState)
-                            .padding(16.dp)
-                    ) {
-                        processLabelList.forEachIndexed { index, header ->
-                            if (index == 1)
-                                Box(
-                                    modifier = Modifier
-                                        .width(160.dp)
-                                        .padding(end = 8.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = row[header] ?: "",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        textAlign = TextAlign.Center,
-                                        color = Color.Black,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                            else
-                                Box(
-                                    modifier = Modifier
-                                        .width(70.dp)
-                                        .padding(end = 8.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = row[header] ?: "",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        textAlign = TextAlign.Center,
-                                        color = Color.Black,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                        }
                     }
-                }
+                )
             }
         }
 
@@ -182,8 +130,7 @@ fun ScrollableDataTable(
                 modifier = Modifier
                     .height(60.dp)
                     .background(color = Color.Black)
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp ),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(selectedLabel ?: "", color = Color.White,modifier = Modifier.weight(1f))
@@ -207,8 +154,7 @@ fun ScrollableDataTable(
 fun HeaderBox(label: String, modifier: Modifier = Modifier, ascending: Boolean? = null) {
     Box(
         modifier = modifier
-            .height(20.dp)
-            .padding(end = 8.dp),
+            .height(20.dp),
         contentAlignment = Alignment.Center,
 
 

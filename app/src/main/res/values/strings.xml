@@ -11,4 +11,7 @@
     <string name="kill">Kill</string>
     <string name="exit">Exit</string>
     <string name="filter">Filter</string>
+    <string name="app_icon">App Icon</string>
+    <string name="default_icon">Default Icon</string>
+    <string name="package_name">Package Name</string>
 </resources>
