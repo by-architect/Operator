@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.byarchitect.operator.R
-import com.byarchitect.operator.common.constant.Colors
+import com.byarchitect.operator.presentation.ui.theme.Colors
 import com.byarchitect.operator.data.model.ProcessLabel
 
 @Composable

@@ -1,7 +1,5 @@
 package com.byarchitect.operator.data.model
 
-import com.byarchitect.operator.data.model.ProcessLabel
-
 data class ProcessSettings(
     val refreshRate: Long,
     val processLabels: List<ProcessLabel>

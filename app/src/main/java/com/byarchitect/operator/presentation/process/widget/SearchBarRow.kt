@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.byarchitect.operator.R
-import com.byarchitect.operator.common.constant.Colors
+import com.byarchitect.operator.presentation.ui.theme.Colors
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 

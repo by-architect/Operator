@@ -1,4 +1,4 @@
-package com.byarchitect.operator.common.constant
+package com.byarchitect.operator.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -64,5 +64,5 @@ object Colors {
     // Common colors
     val White = Color(0xFFFFFFFF)
     val Black = Color(0xFF000000)
-    val Transparent = Color.Transparent
+    val Transparent = Color.Companion.Transparent
 }
