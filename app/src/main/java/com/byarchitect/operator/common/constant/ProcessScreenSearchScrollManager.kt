@@ -31,22 +31,7 @@ class ProcessScreenSearchScrollManager(
 
 
     val scrollSettings = object : NestedScrollConnection {
-        override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-            if (scrollState.value <8)
-                return super.onPostFling(consumed, available)
-            if (scrollState.value > 50) {
-                coroutineScope.launch {
-                    scrollState.animateScrollTo(250, animationSpec = AnimationSpecs.containerSlowAnimation)
-                }
-            } else {
-                coroutineScope.launch {
-                    scrollState.animateScrollTo(0, animationSpec = AnimationSpecs.containerAnimation)
-                }
-            }
-
-            return super.onPostFling(consumed, available)
-        }
-
+        // Disabled to prevent scroll blocking - LazyColumn handles its own scrolling
     }
 
 }

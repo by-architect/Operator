@@ -133,7 +133,7 @@ fun ScrollableDataTable(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(selectedLabel ?: "", color = Color.White,modifier = Modifier.weight(1f))
+                Text(selectedLabel ?: "", color = Color.White,modifier = Modifier.weight(1f).padding(start = 20.dp))
                 ElevatedButton(
                     onClick = {
                         selectedPID?.let { pid ->
