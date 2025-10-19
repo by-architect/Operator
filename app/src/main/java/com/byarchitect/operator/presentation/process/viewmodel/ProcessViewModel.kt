@@ -11,7 +11,7 @@ import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.model.ProcessSortState
 import com.byarchitect.operator.data.model.ProcessState
 import com.byarchitect.operator.data.model.ShellState
-import com.byarchitect.operator.data.repository.ProcessSettingsHandler
+import com.byarchitect.operator.data.repository.SettingsHandler
 import com.byarchitect.operator.data.system.ProcessManager
 import com.byarchitect.operator.data.system.SystemFetcher
 import jakarta.inject.Inject
@@ -31,9 +31,8 @@ import kotlinx.coroutines.launch
 data class ProcessViewModel @Inject constructor(
     val systemFetcher: SystemFetcher,
     val processManager: ProcessManager,
+    private val settingsHandler: SettingsHandler
 ) : ViewModel() {
-
-    private val settingsHandler = ProcessSettingsHandler()
 
     private val _processLabels = MutableStateFlow<List<ProcessLabel>>(ProcessLabel.default())
     val processLabels: StateFlow<List<ProcessLabel>> = _processLabels.asStateFlow()
@@ -92,7 +91,7 @@ data class ProcessViewModel @Inject constructor(
     }
 
     fun applyFirstValuesFromSettingsRepository() {
-        settingsHandler.getSettings().onEach { resource ->
+        settingsHandler.getProcessSettings().onEach { resource ->
             val defaultValues = ProcessSettings.default()
             when (resource) {
                 is Resource.Loading -> {

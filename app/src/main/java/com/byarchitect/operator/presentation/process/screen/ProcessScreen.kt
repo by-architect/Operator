@@ -26,6 +26,7 @@ import com.byarchitect.operator.R
 import com.byarchitect.operator.common.constant.ProcessScreenSearchScrollManager
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
+import com.byarchitect.operator.data.repository.SettingsHandler
 import com.byarchitect.operator.data.system.ProcessManager
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
@@ -39,10 +40,12 @@ fun ProcessScreen(
     onNavigateToSettings: () -> Unit = {}
 ) {
 
+    val context = androidx.compose.ui.platform.LocalContext.current
     val repository = SystemFetcher()
     val processManager = ProcessManager()
+    val settingsHandler = SettingsHandler(context.applicationContext)
     val viewModel: ProcessViewModel = viewModel {
-        ProcessViewModel(repository,processManager)
+        ProcessViewModel(repository, processManager, settingsHandler)
     }
 
     val scrollManager = ProcessScreenSearchScrollManager(

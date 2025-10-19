@@ -14,15 +14,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.R
+import com.byarchitect.operator.data.repository.SettingsHandler
+import com.byarchitect.operator.presentation.settings.viewmodel.SettingsViewModel
 import com.byarchitect.operator.presentation.settings.widget.SettingsNumberOptionRow
 import com.byarchitect.operator.presentation.settings.widget.SettingsRow
 
@@ -33,7 +35,12 @@ fun SettingsScreen(
     onNavigateToLicense: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {}
 ) {
-    var refreshRate by remember { mutableStateOf("3") }
+    val settingsHandler = SettingsHandler(LocalContext.current)
+    val viewModel: SettingsViewModel = viewModel {
+        SettingsViewModel(settingsHandler)
+    }
+
+    val processSettings by viewModel.processSettings.collectAsState()
 
     Column(
         modifier = modifier
@@ -47,8 +54,8 @@ fun SettingsScreen(
         SettingsNumberOptionRow(
             label = stringResource(R.string.refresh_rate),
             icon = Icons.Default.Refresh,
-            value = refreshRate,
-            onValueChange = { refreshRate = it },
+            value = processSettings.refreshRate.toString(),
+            onValueChange = { viewModel.setRefreshInterval(it) },
             suffix = stringResource(R.string.seconds)
         )
 
