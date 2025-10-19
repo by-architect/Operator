@@ -14,8 +14,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -140,13 +141,13 @@ fun SettingsScreen(
 
         SettingsRow(
             label = stringResource(R.string.source_code),
-            icon = Icons.Default.Build,
+            icon = Icons.Default.Code,
             onClick = onNavigateToSourceCode
         )
 
         SettingsRow(
             label = stringResource(R.string.license),
-            icon = Icons.Default.Info,
+            icon = Icons.Default.LocalPolice,
             onClick = onNavigateToLicense
         )
 
