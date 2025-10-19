@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     "settings" -> SettingsScreen(
                         onNavigateBack = { currentScreen = "process" },
                         onNavigateToSourceCode = { openUrl(ExternalLinks.GITHUB_PROJECT) },
-                        onNavigateToLicense = { /* TODO */ },
+                        onNavigateToLicense = { openUrl(ExternalLinks.GITHUB_LICENSE) },
                         onNavigateToAbout = { /* TODO */ }
                     )
                 }
