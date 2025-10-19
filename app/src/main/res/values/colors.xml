@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary colors - Green shades -->
-    <color name="primary">#FF2E7D32</color> <!-- Dark green -->
+    <!-- Primary colors - Dark grey shades -->
+    <color name="primary">#FF1A1A1A</color> <!-- Very dark grey -->
     <color name="on_primary">#FFFFFFFF</color>
-    <color name="primary_container">#FFC8E6C9</color> <!-- Light green -->
-    <color name="on_primary_container">#FF1B5E20</color> <!-- Very dark green -->
+    <color name="primary_container">#FF404040</color> <!-- Dark grey -->
+    <color name="on_primary_container">#FFE0E0E0</color> <!-- Light grey text -->
 
-    <!-- Secondary colors - Green shades -->
-    <color name="secondary">#FF558B2F</color> <!-- Medium green -->
+    <!-- Secondary colors - Dark grey shades -->
+    <color name="secondary">#FF5A5A5A</color> <!-- Dark grey -->
     <color name="on_secondary">#FFFFFFFF</color>
-    <color name="secondary_container">#FFDCEDC8</color> <!-- Very light green -->
-    <color name="on_secondary_container">#FF33691E</color> <!-- Dark olive green -->
+    <color name="secondary_container">#FF3A3A3A</color> <!-- Very dark grey -->
+    <color name="on_secondary_container">#FFB8B8B8</color> <!-- Light grey text -->
 
-    <!-- Tertiary colors - Green shades -->
-    <color name="tertiary">#FF689F38</color> <!-- Lime green -->
+    <!-- Tertiary colors - Dark grey shades -->
+    <color name="tertiary">#FF707070</color> <!-- Medium-dark grey -->
     <color name="on_tertiary">#FFFFFFFF</color>
-    <color name="tertiary_container">#FFF1F8E9</color> <!-- Pale green -->
-    <color name="on_tertiary_container">#FF33691E</color> <!-- Dark olive green -->
+    <color name="tertiary_container">#FF2B2B2B</color> <!-- Very dark grey -->
+    <color name="on_tertiary_container">#FFA1A1A1</color> <!-- Medium-light grey text -->
 
-    <!-- Surface colors - Green tinted -->
-    <color name="surface">#FFFFFFFF</color> <!-- White for card backgrounds -->
-    <color name="on_surface">#FF1B5E20</color> <!-- Dark green -->
-    <color name="surface_variant">#FF9CCC65</color> <!-- Medium-dark green for header -->
-    <color name="on_surface_variant">#FF1B5E20</color> <!-- Dark green for header text -->
+    <!-- Surface colors - Dark grey tinted -->
+    <color name="surface">#FF2B2B2B</color> <!-- Very dark grey for card backgrounds -->
+    <color name="on_surface">#FFE0E0E0</color> <!-- Light grey text -->
+    <color name="surface_variant">#FF404040</color> <!-- Dark grey for header -->
+    <color name="on_surface_variant">#FFE0E0E0</color> <!-- Light grey for header text -->
 
-    <!-- Background colors - Green tinted -->
-    <color name="background">#FFFFFFFF</color> <!-- Very pale green -->
-    <color name="on_background">#FF1B5E20</color> <!-- Dark green -->
+    <!-- Background colors - Dark grey tinted -->
+    <color name="background">#FF1A1A1A</color> <!-- Very dark grey background -->
+    <color name="on_background">#FFE0E0E0</color> <!-- Light grey text -->
 
     <!-- Error colors -->
-    <color name="error">#FFB3261E</color>
-    <color name="on_error">#FFFFFFFF</color>
-    <color name="error_container">#FFF9DEDC</color>
-    <color name="on_error_container">#FF410E0B</color>
+    <color name="error">#FFCF6679</color> <!-- Lighter red for dark theme -->
+    <color name="on_error">#FF000000</color>
+    <color name="error_container">#FF4A1C1C</color> <!-- Dark red container -->
+    <color name="on_error_container">#FFFFC9C9</color> <!-- Light red text -->
 
-    <!-- Outline - Green shades -->
-    <color name="outline">#FF558B2F</color> <!-- Medium green -->
-    <color name="outline_variant">#FFC8E6C9</color> <!-- Light green -->
+    <!-- Outline - Dark grey shades -->
+    <color name="outline">#FF5A5A5A</color> <!-- Dark grey -->
+    <color name="outline_variant">#FF404040</color> <!-- Dark grey -->
 
-    <!-- Card colors - Green shades -->
-    <color name="card_selected">#FFC8E6C9</color> <!-- Light green -->
-    <color name="card_unselected">#FFF1F8E9</color> <!-- Very pale green -->
+    <!-- Card colors - Dark grey shades -->
+    <color name="card_selected">#FF404040</color> <!-- Dark grey -->
+    <color name="card_unselected">#FF2B2B2B</color> <!-- Very dark grey -->
 
-    <!-- Text colors - Green shades -->
-    <color name="text_primary">#FF1B5E20</color> <!-- Dark green -->
-    <color name="text_secondary">#FF33691E</color> <!-- Dark olive green -->
-    <color name="text_label">#FF558B2F</color> <!-- Medium green -->
+    <!-- Text colors - Light grey shades for dark background -->
+    <color name="text_primary">#FFE0E0E0</color> <!-- Light grey -->
+    <color name="text_secondary">#FFB8B8B8</color> <!-- Medium-light grey -->
+    <color name="text_label">#FF898989</color> <!-- Medium grey -->
 
-    <!-- Icon colors - Green shade -->
-    <color name="icon_tint">#FF33691E</color> <!-- Dark olive green -->
+    <!-- Icon colors - Light grey shade -->
+    <color name="icon_tint">#FFB8B8B8</color> <!-- Medium-light grey -->
 
     <!-- Process-specific colors -->
-    <color name="cpu_color">#FF2196F3</color> <!-- Blue -->
-    <color name="memory_color">#FFEF6C00</color> <!-- Orange -->
-    <color name="pid_color">#FF558B2F</color> <!-- Medium green -->
+    <color name="cpu_color">#FF42A5F5</color> <!-- Lighter blue for dark theme -->
+    <color name="memory_color">#FFFFA726</color> <!-- Lighter orange for dark theme -->
+    <color name="pid_color">#FF898989</color> <!-- Medium grey -->
 
-    <!-- Divider - Green shade -->
-    <color name="divider_color">#FFC8E6C9</color> <!-- Light green -->
+    <!-- Divider - Dark grey shade -->
+    <color name="divider_color">#FF404040</color> <!-- Dark grey -->
 
     <!-- Common colors -->
     <color name="white">#FFFFFFFF</color>

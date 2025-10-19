@@ -55,7 +55,7 @@ fun SearchBarRow(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    color = Colors.White,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(24.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -66,7 +66,7 @@ fun SearchBarRow(
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.Outlined.Settings,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = stringResource(R.string.settings),
                 )
             }
@@ -125,7 +125,7 @@ fun SearchBarRow(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    color = Colors.White,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(24.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -138,7 +138,7 @@ fun SearchBarRow(
                 Icon(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.Default.Clear,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = stringResource(R.string.exit),
                 )
             }

@@ -60,7 +60,10 @@ fun SettingsScreen(
     BackHandler(onBack = onNavigateBack)
 
     Column(
-        modifier = modifier.fillMaxSize().padding(top = 24.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(top = 24.dp),
     ) {
         // Top Bar with Back Button and Title
         Box(
