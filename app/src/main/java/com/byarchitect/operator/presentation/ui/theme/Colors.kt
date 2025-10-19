@@ -2,6 +2,10 @@ package com.byarchitect.operator.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Color definitions for the Operator app.
+ * These colors are also defined in res/values/colors.xml for XML usage and documentation.
+ */
 object Colors {
     // Primary colors - Green shades
     val Primary = Color(0xFF2E7D32) // Dark green
@@ -53,9 +57,9 @@ object Colors {
     // Icon colors - Green shade
     val IconTint = Color(0xFF33691E) // Dark olive green
 
-    // Process-specific colors - Green shades
-    val CpuColor = Color(0xFF2196F3) // Vibrant bright green
-    val MemoryColor = Color(0xFFEF6C00) // Active lime green
+    // Process-specific colors
+    val CpuColor = Color(0xFF2196F3) // Blue
+    val MemoryColor = Color(0xFFEF6C00) // Orange
     val PidColor = Color(0xFF558B2F) // Medium green
 
     // Divider - Green shade
