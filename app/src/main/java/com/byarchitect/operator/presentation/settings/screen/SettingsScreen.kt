@@ -35,12 +35,12 @@ fun SettingsScreen(
     onNavigateToLicense: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {}
 ) {
-    val settingsHandler = SettingsHandler(LocalContext.current)
+    val settingsHandler = SettingsHandler(LocalContext.current.applicationContext)
     val viewModel: SettingsViewModel = viewModel {
         SettingsViewModel(settingsHandler)
     }
 
-    val processSettings by viewModel.processSettings.collectAsState()
+    val refreshRate by viewModel.refreshInterval.collectAsState()
 
     Column(
         modifier = modifier
@@ -54,9 +54,12 @@ fun SettingsScreen(
         SettingsNumberOptionRow(
             label = stringResource(R.string.refresh_rate),
             icon = Icons.Default.Refresh,
-            value = processSettings.refreshRate.toString(),
-            onValueChange = { viewModel.setRefreshInterval(it) },
-            suffix = stringResource(R.string.seconds)
+            value = (refreshRate).toString(),
+            onValueChange = {
+                viewModel.setRefreshInterval(it)
+            },
+            onApply = { viewModel.saveIntervalToDatabase() },
+            applyButtonText = stringResource(R.string.apply)
         )
 
 

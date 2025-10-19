@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,8 +30,9 @@ fun SettingsNumberOptionRow(
     icon: ImageVector,
     value: String,
     onValueChange: (String) -> Unit,
+    onApply: () -> Unit,
     modifier: Modifier = Modifier,
-    suffix: String? = null
+    applyButtonText: String = "Apply"
 ) {
     Row(
         modifier = modifier
@@ -93,12 +95,11 @@ fun SettingsNumberOptionRow(
                 )
             )
 
-            if (suffix != null) {
-                Text(
-                    text = suffix,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            Button(
+                onClick = onApply,
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(text = applyButtonText)
             }
         }
     }
