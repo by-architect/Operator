@@ -1,9 +1,11 @@
 package com.byarchitect.operator
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
@@ -19,7 +21,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.parseColor("#FF1A1A1A")),
+            navigationBarStyle = SystemBarStyle.dark(Color.parseColor("#FF1A1A1A"))
+        )
         setContent {
             OperatorTheme {
                 var currentScreen by remember { mutableStateOf("process") }
