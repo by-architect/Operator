@@ -20,9 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.byarchitect.operator.R
 
 @Composable
 fun SettingsNumberOptionRow(
@@ -32,8 +34,9 @@ fun SettingsNumberOptionRow(
     onValueChange: (String) -> Unit,
     onApply: () -> Unit,
     modifier: Modifier = Modifier,
-    applyButtonText: String = "Apply"
+    applyButtonText: String? = null
 ) {
+    val buttonText = applyButtonText ?: stringResource(R.string.apply)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -99,7 +102,7 @@ fun SettingsNumberOptionRow(
                 onClick = onApply,
                 modifier = Modifier.padding(start = 8.dp)
             ) {
-                Text(text = applyButtonText)
+                Text(text = buttonText)
             }
         }
     }

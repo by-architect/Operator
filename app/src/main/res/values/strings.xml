@@ -14,6 +14,7 @@
     <string name="app_icon">App Icon</string>
     <string name="default_icon">Default Icon</string>
     <string name="package_name">Package Name</string>
+    <string name="back">Back</string>
 
     <!-- Settings -->
     <string name="general">General</string>
