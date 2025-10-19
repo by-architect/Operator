@@ -7,11 +7,6 @@
 🧬 **Operator** is a powerful, Matrix-inspired Android Task Manager that lets you monitor, manage, and terminate processes directly from your device
 
 ---
-
-## 💻 Project Progress
-[Kanban](https://kanban.emindemir.site/b/A7pfh3Qhq9JH9SeNQ/operator)
-
----
 ## 💻 Features
 
 - 📊 **Real-Time Process Monitor** – View all running processes
