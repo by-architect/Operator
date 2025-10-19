@@ -26,4 +26,6 @@
     <string name="source_code">Source Code</string>
     <string name="license">License</string>
     <string name="about_app">About</string>
+    <string name="interval_saved">Interval Saved</string>
+    <string name="interval_saved_error">Problem Saving Interval</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.byarchitect.operator.presentation.settings.viewmodel
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.byarchitect.operator.R
 import com.byarchitect.operator.common.model.Resource
 import com.byarchitect.operator.data.model.ProcessSettings
 import com.byarchitect.operator.data.repository.SettingsHandler
@@ -35,7 +38,7 @@ data class SettingsViewModel @Inject constructor(
         _refreshInterval.value = milliSecondsData ?: ""
     }
 
-    fun saveIntervalToDatabase() {
+    fun saveIntervalToDatabase(context: Context) {
         if (_refreshInterval.value.isEmpty()) {
             return
         }
@@ -44,16 +47,17 @@ data class SettingsViewModel @Inject constructor(
         _processSettings.value = processSettings
 
         settingsHandler.setProcessSettings(processSettings).onEach { resource ->
-            // Handle success/error if needed
             when (resource) {
                 is Resource.Success -> {
-                    // Settings saved successfully
+                    Toast.makeText(context, R.string.interval_saved, Toast.LENGTH_SHORT).show()
                 }
+
                 is Resource.Error -> {
-                    // Handle error
+                    Toast.makeText(context, R.string.interval_saved_error, Toast.LENGTH_SHORT).show()
+
                 }
+
                 is Resource.Loading -> {
-                    // Handle loading
                 }
             }
         }.launchIn(viewModelScope)
