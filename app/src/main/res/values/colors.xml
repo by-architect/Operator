@@ -1,10 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <!-- Primary colors - Green shades -->
+    <color name="primary">#FF2E7D32</color> <!-- Dark green -->
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="primary_container">#FFC8E6C9</color> <!-- Light green -->
+    <color name="on_primary_container">#FF1B5E20</color> <!-- Very dark green -->
+
+    <!-- Secondary colors - Green shades -->
+    <color name="secondary">#FF558B2F</color> <!-- Medium green -->
+    <color name="on_secondary">#FFFFFFFF</color>
+    <color name="secondary_container">#FFDCEDC8</color> <!-- Very light green -->
+    <color name="on_secondary_container">#FF33691E</color> <!-- Dark olive green -->
+
+    <!-- Tertiary colors - Green shades -->
+    <color name="tertiary">#FF689F38</color> <!-- Lime green -->
+    <color name="on_tertiary">#FFFFFFFF</color>
+    <color name="tertiary_container">#FFF1F8E9</color> <!-- Pale green -->
+    <color name="on_tertiary_container">#FF33691E</color> <!-- Dark olive green -->
+
+    <!-- Surface colors - Green tinted -->
+    <color name="surface">#FFFFFFFF</color> <!-- White for card backgrounds -->
+    <color name="on_surface">#FF1B5E20</color> <!-- Dark green -->
+    <color name="surface_variant">#FF9CCC65</color> <!-- Medium-dark green for header -->
+    <color name="on_surface_variant">#FF1B5E20</color> <!-- Dark green for header text -->
+
+    <!-- Background colors - Green tinted -->
+    <color name="background">#FFFFFFFF</color> <!-- Very pale green -->
+    <color name="on_background">#FF1B5E20</color> <!-- Dark green -->
+
+    <!-- Error colors -->
+    <color name="error">#FFB3261E</color>
+    <color name="on_error">#FFFFFFFF</color>
+    <color name="error_container">#FFF9DEDC</color>
+    <color name="on_error_container">#FF410E0B</color>
+
+    <!-- Outline - Green shades -->
+    <color name="outline">#FF558B2F</color> <!-- Medium green -->
+    <color name="outline_variant">#FFC8E6C9</color> <!-- Light green -->
+
+    <!-- Card colors - Green shades -->
+    <color name="card_selected">#FFC8E6C9</color> <!-- Light green -->
+    <color name="card_unselected">#FFF1F8E9</color> <!-- Very pale green -->
+
+    <!-- Text colors - Green shades -->
+    <color name="text_primary">#FF1B5E20</color> <!-- Dark green -->
+    <color name="text_secondary">#FF33691E</color> <!-- Dark olive green -->
+    <color name="text_label">#FF558B2F</color> <!-- Medium green -->
+
+    <!-- Icon colors - Green shade -->
+    <color name="icon_tint">#FF33691E</color> <!-- Dark olive green -->
+
+    <!-- Process-specific colors -->
+    <color name="cpu_color">#FF2196F3</color> <!-- Blue -->
+    <color name="memory_color">#FFEF6C00</color> <!-- Orange -->
+    <color name="pid_color">#FF558B2F</color> <!-- Medium green -->
+
+    <!-- Divider - Green shade -->
+    <color name="divider_color">#FFC8E6C9</color> <!-- Light green -->
+
+    <!-- Common colors -->
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
 </resources>
