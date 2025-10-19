@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
                         onNavigateToSettings = { currentScreen = "settings" }
                     )
                     "settings" -> SettingsScreen(
+                        onNavigateBack = { currentScreen = "process" },
                         onNavigateToSourceCode = { /* TODO */ },
                         onNavigateToLicense = { /* TODO */ },
                         onNavigateToAbout = { /* TODO */ }
