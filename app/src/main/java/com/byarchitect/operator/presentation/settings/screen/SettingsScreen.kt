@@ -54,6 +54,7 @@ fun SettingsScreen(
     }
 
     val refreshRate by viewModel.refreshInterval.collectAsState()
+    val context = LocalContext.current
 
     // Handle system back button
     BackHandler(onBack = onNavigateBack)
@@ -126,7 +127,7 @@ fun SettingsScreen(
             onValueChange = {
                 viewModel.setRefreshInterval(it)
             },
-            onApply = { viewModel.saveIntervalToDatabase() },
+            onApply = { viewModel.saveIntervalToDatabase(context) },
             applyButtonText = stringResource(R.string.apply)
         )
 
