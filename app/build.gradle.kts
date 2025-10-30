@@ -9,12 +9,17 @@ android {
     namespace = "com.byarchitect.operator"
     compileSdk = 35
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     defaultConfig {
         applicationId = "com.byarchitect.operator"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,6 +43,7 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
