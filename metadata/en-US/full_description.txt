@@ -1,0 +1,1 @@
+Sort processes by CPU usage, memory usage, PID, or process name. Kill processes with precision. View detailed process information.
