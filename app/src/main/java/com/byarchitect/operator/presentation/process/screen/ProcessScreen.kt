@@ -61,13 +61,6 @@ fun ProcessScreen(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .nestedScroll(scrollManager.scrollSettings)
-                .verticalScroll(scrollManager.scrollState),
-
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
 
@@ -97,7 +90,16 @@ fun ProcessScreen(
 
                     else -> {
                         Box {
-                            Column {
+                            Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .nestedScroll(scrollManager.scrollSettings)
+                .verticalScroll(scrollManager.scrollState),
+
+            horizontalAlignment = Alignment.CenterHorizontally
+
+                            ) {
                                 Box(Modifier.height(12.dp))
                                 SearchBarRow(
                                     viewModel = viewModel,
