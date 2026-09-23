@@ -1,0 +1,5 @@
+Version fix release.
+
+The v1.0.0 APK was accidentally built from the commit before the tag, so it identified itself as version 0.0.7. This release is built from a clean tree at the v1.0.1 tag and carries the correct versionName (1.0.1) and an increased versionCode (2), so it installs as a proper update.
+
+No functional changes to the app itself.

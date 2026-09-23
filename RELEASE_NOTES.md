@@ -85,7 +85,8 @@ Operator is a native Android application that leverages root access to provide d
 
 ## Installation
 
-1. Download the `Operator-v1.0.apk` file
+1. Install from [IzzyOnDroid](https://apt.izzysoft.de/packages/com.byarchitect.operator),
+   or download the APK from the [Releases](https://github.com/by-architect/Operator/releases) page
 2. Enable "Install from Unknown Sources" in your device settings
 3. Install the APK
 4. Grant root permissions when prompted
@@ -143,6 +144,14 @@ Operator is licensed under the GNU General Public License v3.0. The source code 
 - **License**: See `Lisence.md` for GPL v3.0 license details
 
 ## Changelog
+
+### Version 1.0.1 (versionCode 2)
+- Version metadata fix: the v1.0.0 APK was built from the commit *before* the release tag,
+  so it identified itself as `0.0.7`. This release is built from a clean tree at the tag and
+  ships `versionName = 1.0.1` with `versionCode = 2`, so it installs as a proper update.
+- Release artifacts (`.apk` / `.idsig`) and signing material are no longer tracked in the
+  repository, and `RELEASING.md` documents the build-from-the-tag rule.
+- No functional changes to the app itself.
 
 ### Version 1.0.0 (October 19, 2025)
 - Initial stable release

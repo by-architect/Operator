@@ -13,3 +13,18 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Build outputs — never commit release artifacts to the source tree
+*.apk
+*.aab
+*.idsig
+
+# Signing material — must never be published
+*.keystore
+*.jks
+keystore.properties
+
+# Editor / tooling scratch files
+.kotlin/
+*.kts-e
+commit-changes.md
