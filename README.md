@@ -22,3 +22,7 @@
      height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.byarchitect.operator)
 
 Or download the latest APK from the [Releases](https://github.com/by-architect/Operator/releases) page.
+
+> **Upgrading from v1.0.0?** Uninstall it first. v1.0.1 is signed with a new key, so Android
+> will refuse to install it over the old version, and your settings will be lost. The previous
+> signing key was accidentally committed to this repository and had to be replaced.

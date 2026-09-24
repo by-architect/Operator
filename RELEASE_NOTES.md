@@ -146,9 +146,17 @@ Operator is licensed under the GNU General Public License v3.0. The source code 
 ## Changelog
 
 ### Version 1.0.1 (versionCode 2)
+
+> **You must uninstall v1.0.0 before installing this release.** Android will refuse it as an
+> update, because it is signed with a new key. Your app settings will be lost.
+>
+> The old signing key was accidentally committed to this repository and has to be treated as
+> compromised, and its password is no longer recoverable — so it could not be used to sign a
+> compatible update. Sorry for the disruption; nothing else about the app has changed.
+
 - Version metadata fix: the v1.0.0 APK was built from the commit *before* the release tag,
   so it identified itself as `0.0.7`. This release is built from a clean tree at the tag and
-  ships `versionName = 1.0.1` with `versionCode = 2`, so it installs as a proper update.
+  ships `versionName = 1.0.1` with `versionCode = 2`.
 - Release artifacts (`.apk` / `.idsig`) and signing material are no longer tracked in the
   repository, and `RELEASING.md` documents the build-from-the-tag rule.
 - No functional changes to the app itself.

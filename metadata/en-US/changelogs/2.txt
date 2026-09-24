@@ -1,5 +1,3 @@
-Version fix release.
+IMPORTANT: uninstall v1.0.0 before installing this release. It is signed with a new key, so Android will not accept it as an update, and your settings will be lost. The old key was accidentally published in the source repository and its password is no longer recoverable, so it could not be reused.
 
-The v1.0.0 APK was accidentally built from the commit before the tag, so it identified itself as version 0.0.7. This release is built from a clean tree at the v1.0.1 tag and carries the correct versionName (1.0.1) and an increased versionCode (2), so it installs as a proper update.
-
-No functional changes to the app itself.
+Version fix: the v1.0.0 APK was built from the commit before the tag and identified itself as 0.0.7. This build comes from a clean tree at the tag, with versionCode 2.
