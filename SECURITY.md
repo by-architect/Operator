@@ -31,6 +31,29 @@ Verify any APK you download against it:
 apksigner verify --print-certs Operator-<version>.apk
 ```
 
+## Commit and tag signing
+
+Commits and release tags in this repository are signed, using SSH signatures
+(`gpg.format = ssh`). GitHub shows them as **Verified**.
+
+Signing key fingerprint:
+
+```
+SHA256:0N7tO1J2k+u7tXJE71G600DuGBmZsuo/xnm5+wIZtsE
+```
+
+The public key is in [`.github/allowed_signers`](.github/allowed_signers), so
+you can verify the history yourself without trusting GitHub's badge:
+
+```bash
+git config gpg.ssh.allowedSignersFile .github/allowed_signers
+git log --show-signature -1
+git verify-tag v1.0.1
+```
+
+Commits before 2026-09-25 are unsigned. If you need to confirm that an older
+commit is genuine, use the contact address above.
+
 ## Signing key history
 
 **v1.0.0 and earlier** were signed with a different key, which must be treated as
