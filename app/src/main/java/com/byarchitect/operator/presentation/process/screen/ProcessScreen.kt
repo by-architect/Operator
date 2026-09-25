@@ -2,6 +2,9 @@ package com.byarchitect.operator.presentation.process.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.R
@@ -71,21 +75,31 @@ fun ProcessScreen(
 
 
             when {
-                shellState.isLoading -> CircularProgressIndicator()
-                shellState.error != null -> Column {
-                    Text(errorResource(shellState.error ?: Error.unknownError()))
+                shellState.isLoading -> CenteredState(innerPadding) {
+                    CircularProgressIndicator()
+                }
+
+                shellState.error != null -> CenteredState(innerPadding) {
+                    Text(
+                        text = errorResource(shellState.error ?: Error.unknownError()),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(16.dp))
                     Button(onClick = {
                         viewModel.loadShell()
                     }) { Text(stringResource(R.string.load_again)) }
                 }
 
                 else -> when {
-                    uiState.isLoading -> {
+                    uiState.isLoading -> CenteredState(innerPadding) {
                         CircularProgressIndicator()
                     }
 
-                    uiState.error != null -> {
-                        Text(errorResource(uiState.error!!))
+                    uiState.error != null -> CenteredState(innerPadding) {
+                        Text(
+                            text = errorResource(uiState.error!!),
+                            textAlign = TextAlign.Center
+                        )
                     }
 
                     else -> {
@@ -125,4 +139,27 @@ fun ProcessScreen(
         }
     }
 
+}
+
+/**
+ * Centres a transient state - the loading spinner, or an error with its retry button -
+ * in the space the Scaffold gives us. Without this they sit in the top-left corner.
+ */
+@Composable
+private fun CenteredState(
+    innerPadding: PaddingValues,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            content = content
+        )
+    }
 }
