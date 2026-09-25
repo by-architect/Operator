@@ -37,7 +37,7 @@ fun SelectedProcessContainer(modifier: Modifier,viewModel: ProcessViewModel, sel
         )
         Button(
             onClick = {
-                viewModel.killProcess(selectedProcess.pid.toInt())
+                viewModel.killProcess(selectedProcess.pid.toInt(), selectedProcess.packageName)
             }
         ) {
             Text(text = stringResource(R.string.exit))

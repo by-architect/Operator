@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Operator</string>
     <string name="error_not_root">Root not detected</string>
+    <string name="error_no_backend">No root access, and Shizuku is not running</string>
+    <string name="error_shizuku_permission">Shizuku is running but has not granted access yet</string>
+    <string name="error_shizuku_bind">Could not connect to Shizuku</string>
+    <string name="grant_shizuku">Grant Shizuku Access</string>
+    <string name="no_backend_hint">Operator needs root, or Shizuku running, to read the process table. Shizuku works without root but has to be started after each reboot.</string>
+    <string name="cannot_kill_without_root">Only apps can be stopped over Shizuku. This one needs root.</string>
+    <string name="backend">Access Method</string>
+    <string name="backend_root">Root</string>
+    <string name="backend_shizuku">Shizuku (ADB)</string>
+    <string name="backend_none">None</string>
     <string name="error_unknown">Unexpected Error Occured</string>
     <string name="error_shell">Shell command is not successful</string>
     <string name="load_again">Try Again</string>

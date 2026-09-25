@@ -47,6 +47,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.byarchitect.operator.R
 import com.byarchitect.operator.common.constant.ExternalLinks
 import com.byarchitect.operator.data.repository.SettingsHandler
+import com.byarchitect.operator.data.system.Backend
+import com.byarchitect.operator.data.system.SystemAccess
 import com.byarchitect.operator.presentation.settings.viewmodel.SettingsViewModel
 import com.byarchitect.operator.presentation.settings.widget.SettingsNumberOptionRow
 import com.byarchitect.operator.presentation.settings.widget.SettingsRow
@@ -223,6 +225,16 @@ private fun AboutDialog(onDismiss: () -> Unit) {
             Column {
                 AboutLine(stringResource(R.string.version), "$version ($build)")
                 AboutLine(stringResource(R.string.package_name), context.packageName)
+                AboutLine(
+                    stringResource(R.string.backend),
+                    stringResource(
+                        when (SystemAccess.backend) {
+                            Backend.ROOT -> R.string.backend_root
+                            Backend.SHIZUKU -> R.string.backend_shizuku
+                            Backend.NONE -> R.string.backend_none
+                        }
+                    )
+                )
                 AboutLine(stringResource(R.string.license), "GPL-3.0-only")
                 AboutLine(stringResource(R.string.author), "by-architect")
                 AboutLine(stringResource(R.string.contact), ExternalLinks.CONTACT_EMAIL)

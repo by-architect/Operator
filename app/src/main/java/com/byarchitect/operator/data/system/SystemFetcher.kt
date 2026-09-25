@@ -2,8 +2,8 @@ package com.byarchitect.operator.data.system
 
 import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.Resource
+import com.byarchitect.operator.R
 import com.byarchitect.operator.data.model.ProcessLabel
-import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -11,32 +11,19 @@ class SystemFetcher() {
 
     fun loadShell(): Flow<Resource<Any>> = flow {
         emit(Resource.Loading())
-        ShellManager.closeShell()
-        try {
-            ShellManager.initializeShell()
-        } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
-            return@flow
-        }
-        val shell = Shell.getShell()
-        if (!shell.isAlive) {
-            emit(
-                Resource.Error(
-                    Error(messageResource = com.byarchitect.operator.R.string.error_shell, null)
-                )
-            )
-            return@flow
-        }
-        if (!shell.isRoot) {
-            emit(
-                Resource.Error(
-                    Error(messageResource = com.byarchitect.operator.R.string.error_not_root, null)
-                )
-            )
-            return@flow
-        }
-        emit(Resource.Success(Any()))
+        when (val result = SystemAccess.connect()) {
+            is SystemAccess.Result.Connected ->
+                emit(Resource.Success(Any()))
 
+            SystemAccess.Result.ShizukuPermissionRequired ->
+                emit(Resource.Error(Error(R.string.error_shizuku_permission, null)))
+
+            SystemAccess.Result.Unavailable ->
+                emit(Resource.Error(Error(R.string.error_no_backend, null)))
+
+            is SystemAccess.Result.Failed ->
+                emit(Resource.Error(Error(R.string.error_shizuku_bind, result.cause as? Exception)))
+        }
     }
 
     fun getProcessList(
@@ -46,7 +33,7 @@ class SystemFetcher() {
         emit(Resource.Loading())
         try {
             val labelsAsString = labels.joinToString(",") { it.label }
-            val data = Shell.cmd("ps -A -o $labelsAsString ").exec().out.toMutableList()
+            val data = SystemAccess.requireRunner().exec("ps -A -o $labelsAsString").out.toMutableList()
             val dataLines = data.drop(1)
             val processListMap: ArrayList<Map<ProcessLabel, String>> = ArrayList()
             if (searchQuery.isNotEmpty()) {
@@ -81,17 +68,26 @@ class SystemFetcher() {
             processListMap
             emit(Resource.Success(processListMap))
         } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
+            emit(Resource.Error(error = Error(messageResource = R.string.error_shell, exception = e)))
         }
 
     }
 
-    fun killProcess(pid: Int): Flow<Resource<String>> = flow {
+    fun killProcess(pid: Int, name: String): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
+        if (!SystemAccess.canKill(name)) {
+            emit(Resource.Error(Error(R.string.cannot_kill_without_root, null)))
+            return@flow
+        }
         try {
-            val output = Shell.cmd("kill $pid").exec().out
+            val result = SystemAccess.requireRunner().exec(SystemAccess.killCommand(pid, name))
+            if (result.ok) {
+                emit(Resource.Success(name))
+            } else {
+                emit(Resource.Error(Error(R.string.error_shell, null)))
+            }
         } catch (e: Exception) {
-            emit(Resource.Error(error = Error(messageResource = com.byarchitect.operator.R.string.error_shell, exception = e)))
+            emit(Resource.Error(Error(messageResource = R.string.error_shell, exception = e)))
         }
     }
 }

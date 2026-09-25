@@ -217,8 +217,8 @@ data class ProcessViewModel @Inject constructor(
         _processLabels.value = labels
     }
 
-    fun killProcess(pid: Int) {
-        systemFetcher.killProcess(pid).launchIn(viewModelScope)
+    fun killProcess(pid: Int, name: String) {
+        systemFetcher.killProcess(pid, name).launchIn(viewModelScope)
     }
 
     fun selectProcess(process: Process) {

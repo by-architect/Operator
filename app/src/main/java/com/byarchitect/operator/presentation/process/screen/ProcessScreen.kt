@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,6 +35,7 @@ import com.byarchitect.operator.common.model.Error
 import com.byarchitect.operator.common.model.errorResource
 import com.byarchitect.operator.data.repository.SettingsHandler
 import com.byarchitect.operator.data.system.ProcessManager
+import com.byarchitect.operator.data.system.SystemAccess
 import com.byarchitect.operator.data.system.SystemFetcher
 import com.byarchitect.operator.presentation.process.viewmodel.ProcessViewModel
 import com.byarchitect.operator.presentation.process.widget.ScrollableDataTable
@@ -61,6 +63,13 @@ fun ProcessScreen(
         focusManager = LocalFocusManager.current
     )
 
+    DisposableEffect(Unit) {
+        val handle = SystemAccess.addPermissionResultListener { granted ->
+            if (granted) viewModel.loadShell()
+        }
+        onDispose { handle.remove() }
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background
@@ -86,9 +95,27 @@ fun ProcessScreen(
                         textAlign = TextAlign.Center
                     )
                     Spacer(Modifier.height(16.dp))
+
+                    // Offer Shizuku only when it is actually running - suggesting it
+                    // otherwise just sends people to a dead end.
+                    if (SystemAccess.isShizukuRunning()) {
+                        Button(onClick = { SystemAccess.requestShizukuPermission() }) {
+                            Text(stringResource(R.string.grant_shizuku))
+                        }
+                        Spacer(Modifier.height(8.dp))
+                    }
+
                     Button(onClick = {
                         viewModel.loadShell()
                     }) { Text(stringResource(R.string.load_again)) }
+
+                    Spacer(Modifier.height(24.dp))
+                    Text(
+                        text = stringResource(R.string.no_backend_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        textAlign = TextAlign.Center
+                    )
                 }
 
                 else -> when {

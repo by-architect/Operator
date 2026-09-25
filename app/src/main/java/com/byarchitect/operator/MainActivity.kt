@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.byarchitect.operator.common.constant.ExternalLinks
+import com.byarchitect.operator.data.system.SystemAccess
 import com.byarchitect.operator.presentation.process.screen.ProcessScreen
 import com.byarchitect.operator.presentation.settings.screen.SettingsScreen
 import com.byarchitect.operator.presentation.ui.theme.OperatorTheme
@@ -20,6 +21,7 @@ import com.byarchitect.operator.presentation.ui.theme.OperatorTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SystemAccess.init(this)
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(Color.parseColor("#FF1A1A1A")),

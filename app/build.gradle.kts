@@ -47,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        aidl = true
     }
 
 }
@@ -73,6 +74,10 @@ dependencies {
 
     implementation(libs.core)
     implementation(libs.service)
+
+    // Shizuku: run shell commands as the ADB user on non-rooted devices
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
     implementation (libs.nio)
 
     implementation(libs.hilt.android)
