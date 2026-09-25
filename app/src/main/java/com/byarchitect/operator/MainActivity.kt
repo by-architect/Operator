@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         onNavigateBack = { currentScreen = "process" },
                         onNavigateToSourceCode = { openUrl(ExternalLinks.GITHUB_PROJECT) },
                         onNavigateToLicense = { openUrl(ExternalLinks.GITHUB_LICENSE) },
-                        onNavigateToAbout = { /* TODO */ }
+                        onNavigateToIssues = { openUrl(ExternalLinks.GITHUB_ISSUES) }
                     )
                 }
             }

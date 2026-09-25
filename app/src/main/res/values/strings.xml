@@ -27,6 +27,12 @@
     <string name="source_code">Source Code</string>
     <string name="license">License</string>
     <string name="about_app">About</string>
+    <string name="report_issue">Report an Issue</string>
+    <string name="version">Version</string>
+    <string name="author">Author</string>
+    <string name="contact">Contact</string>
+    <string name="close">Close</string>
+    <string name="requires_root_note">Requires root access</string>
     <string name="interval_saved">Interval Saved</string>
     <string name="interval_saved_error">Problem Saving Interval</string>
 </resources>

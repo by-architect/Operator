@@ -91,7 +91,7 @@ fun SettingsNumberOptionRow(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center
                 ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
