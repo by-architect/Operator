@@ -145,6 +145,32 @@ Operator is licensed under the GNU General Public License v3.0. The source code 
 
 ## Changelog
 
+### Version 2.0 (versionCode 4)
+
+**Operator no longer requires root.**
+
+Where there is no root, it can now run through [Shizuku](https://shizuku.rikka.app/),
+which executes commands as the ADB shell user. That is enough to read the full process
+table and to force-stop apps. Root is still preferred and is used automatically whenever
+it is available.
+
+- Added a backend abstraction with root and Shizuku implementations; the app picks root
+  first and falls back to Shizuku.
+- Shizuku commands run through a bound user service over AIDL. Shizuku removed
+  `newProcess` from its public API in 13.x, so a user service is the only supported way
+  to execute a command as the shell user.
+- The shell user cannot signal a process owned by another app, so over Shizuku apps are
+  stopped with `am force-stop`. Native system processes remain root-only, and Operator
+  now says so rather than failing silently.
+- The error screen offers to request Shizuku access, but only when Shizuku is actually
+  running, and reloads as soon as the permission dialog is answered.
+- About shows which access method is in use.
+- Fixed: stopping a process never reported success, so a working kill was
+  indistinguishable from a failed one.
+
+Closes #2. Also supersedes #3: Shizuku achieves what an accessibility service would
+attempt, without depending on the layout of the system Settings app.
+
 ### Version 1.0.2 (versionCode 3)
 
 Bug fixes only — nothing about process monitoring changed. Installs as a normal update

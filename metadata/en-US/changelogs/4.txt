@@ -1,0 +1,6 @@
+Operator now works without root, using Shizuku.
+
+- If you have no root, Operator can run through Shizuku instead. Shizuku needs no root, but it has to be started again after each reboot
+- Root is still preferred, and is used whenever it is available
+- Over Shizuku, apps are stopped with a force-stop. System processes still need root, and Operator now tells you so instead of quietly doing nothing
+- Fixed: stopping a process gave no feedback when it succeeded

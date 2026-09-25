@@ -4,8 +4,8 @@
 
 # Operator
 
-**A root-powered process manager for Android.**
-See what's running, what it's costing you, and kill it.
+**A process manager for Android, with root or Shizuku.**
+See what's running, what it's costing you, and stop it.
 
 [![IzzyOnDroid](https://img.shields.io/endpoint?url=https%3A%2F%2Fapt.izzysoft.de%2Ffdroid%2Fapi%2Fv1%2Fshield%2Fcom.byarchitect.operator&style=flat-square)](https://apt.izzysoft.de/packages/com.byarchitect.operator)
 [![Release](https://img.shields.io/github/v/release/by-architect/Operator?style=flat-square)](https://github.com/by-architect/Operator/releases)
@@ -27,7 +27,7 @@ process table directly, so you get the real picture — and the ability to act o
 
 - 📊 **Live process list** — refreshes on your schedule, not the system's
 - ⚡ **CPU and memory per process** — find what's draining the battery
-- 🔪 **Kill anything** — terminate background processes with root privileges
+- 🔪 **Stop what you don't want** — kill processes with root, or force-stop apps over Shizuku
 - 🔎 **Search and sort** — by name, PID, CPU or memory, ascending or descending
 - 🧩 **58 selectable columns** — PID, PPID, VSZ, RSS, WCHAN, NI, ARGS and the rest of `ps`
 - ⏱️ **Adjustable refresh rate** — trade responsiveness against battery
@@ -38,10 +38,17 @@ process table directly, so you get the real picture — and the ability to act o
 | | |
 |---|---|
 | **Android** | 7.0 (API 24) or newer |
-| **Root** | Required — Magisk, KernelSU or equivalent |
+| **Access** | Root (Magisk, KernelSU…) **or** [Shizuku](https://shizuku.rikka.app/) |
 
-Operator cannot work without root. It reads the process table through a root
-shell ([libsu](https://github.com/topjohnwu/libsu)); there is no non-root mode.
+Operator needs privileged access to read the process table — a normal app cannot see
+other processes on modern Android. It works two ways:
+
+- **Root** — full access. Any process can be inspected and killed.
+- **Shizuku** — no root needed. Commands run as the ADB shell user, which can read the
+  whole process table and force-stop apps. Shizuku has to be restarted after each reboot,
+  and system processes cannot be stopped this way.
+
+Root is used automatically when available, otherwise Operator falls back to Shizuku.
 
 ## 📥 Install
 
