@@ -50,8 +50,8 @@ shell ([libsu](https://github.com/topjohnwu/libsu)); there is no non-root mode.
 Or grab the APK from [Releases](https://github.com/by-architect/Operator/releases).
 
 > [!IMPORTANT]
-> **Coming from v1.0.0?** Uninstall it first. v1.0.1 is signed with a new key, so
-> Android will refuse it as an update and your settings will be lost.
+> **Coming from v1.0.0?** Uninstall it first. Every release from v1.0.1 onwards is signed
+> with a new key, so Android will refuse it as an update and your settings will be lost.
 > [Why](SECURITY.md#signing-key-history).
 
 Verify what you downloaded before installing it:

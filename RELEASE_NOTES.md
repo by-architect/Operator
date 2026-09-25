@@ -145,6 +145,25 @@ Operator is licensed under the GNU General Public License v3.0. The source code 
 
 ## Changelog
 
+### Version 1.0.2 (versionCode 3)
+
+Bug fixes only — nothing about process monitoring changed. Installs as a normal update
+over v1.0.1.
+
+- The app no longer flashes white while opening: the launch theme inherited a light
+  platform theme while the app itself is dark-only.
+- The process list now opens with the `NAME / %CPU / %MEM / PID` header visible. It was
+  sized to the full screen rather than the scroll viewport, so opening scrolled past the
+  header by the height of the system bars.
+- The "root not detected" message and its retry button are centred instead of pinned to
+  the top-left corner.
+- Settings: the title is no longer hidden behind the status bar on devices with a taller
+  cutout; About is no longer an empty row and shows version, application id, licence,
+  author and contact; a Report an Issue link was added.
+- Fixed several elements rendered in `primary`, which is the same colour as the
+  background and therefore invisible: the section headings, the About dialog's Close
+  button, and the text cursor in the search and refresh-rate fields.
+
 ### Version 1.0.1 (versionCode 2)
 
 > **You must uninstall v1.0.0 before installing this release.** Android will refuse it as an
