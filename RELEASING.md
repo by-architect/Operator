@@ -41,6 +41,33 @@ from the tag would have caught it.
 7. **Sign** the APK with the release keystore (kept outside the repository), then attach it
    to a GitHub release created from that same tag.
 
+## How IzzyOnDroid picks up a release
+
+Nothing is submitted by hand. IzzyOnDroid scans this repository and pulls new
+releases by itself, so the release process *is* the publishing process.
+
+**It watches tags and GitHub releases — not `master`.** Pushing a commit to
+`master` will never put anything in the store. The trigger is a new tag with a
+GitHub release attached to it.
+
+What has to line up for the scan to succeed:
+
+| | Requirement |
+| --- | --- |
+| Tag | `v<versionName>` — e.g. `v1.0.1` |
+| Release asset | `Operator-v<versionName>.apk` — the name is matched by pattern, so keep the shape exactly |
+| `versionCode` | must be higher than the previous release |
+| Signature | must be the key in `secrets/operator-release-2026.keystore` (`8c74ae8f…`), which is whitelisted on their side |
+| Changelog | `metadata/en-US/changelogs/<versionCode>.txt` — imported via Fastlane and shown as "What's New" |
+| Build | must reproduce from the tag; they rebuild and compare against the published APK |
+
+Pickup is not instant. The scan runs periodically, the result goes to staging,
+and it appears publicly at the next sync — hours rather than minutes.
+
+If a release does not show up, the usual causes are, in order: the APK was not
+attached to the release, the asset name does not match the pattern, the
+`versionCode` did not increase, or the APK was signed with the wrong key.
+
 ## Never change what has already been distributed
 
 Once an APK is published, it stays as it is. If a release is wrong, do **not** replace the
