@@ -1,6 +1,7 @@
 package com.byarchitect.operator.presentation.process.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -103,16 +104,25 @@ fun ProcessScreen(
                     }
 
                     else -> {
-                        Box {
+                        BoxWithConstraints(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                        ) {
+                            // Size the table to the visible viewport rather than the whole
+                            // screen. The scrollable range is then exactly the spacer plus the
+                            // search bar, so scrolling to maxValue hides the search bar and
+                            // stops with the table header at the top. Using the full screen
+                            // height overshoots by the system bar insets and hides the header
+                            // too, which is what the list did on first open.
+                            val viewportHeight = maxHeight
+
                             Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .nestedScroll(scrollManager.scrollSettings)
-                .verticalScroll(scrollManager.scrollState),
-
-            horizontalAlignment = Alignment.CenterHorizontally
-
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .nestedScroll(scrollManager.scrollSettings)
+                                    .verticalScroll(scrollManager.scrollState),
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Box(Modifier.height(12.dp))
                                 SearchBarRow(
@@ -125,7 +135,8 @@ fun ProcessScreen(
                                     data = uiState.processes,
                                     mainScreenSearchScrollManager = scrollManager,
                                     selectedProcess = selectedProcess,
-                                    viewModel = viewModel
+                                    viewModel = viewModel,
+                                    tableHeight = viewportHeight
                                 )
                             }
 

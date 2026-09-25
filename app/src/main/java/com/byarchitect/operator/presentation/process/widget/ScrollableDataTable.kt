@@ -25,7 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,7 +40,9 @@ fun ScrollableDataTable(
     modifier: Modifier = Modifier,
     mainScreenSearchScrollManager: ProcessScreenSearchScrollManager,
     selectedProcess: Process?,
-    viewModel: ProcessViewModel
+    viewModel: ProcessViewModel,
+    /** Height of the visible scroll viewport, not the whole screen - see ProcessScreen. */
+    tableHeight: Dp
 ) {
 
     val scrollState = rememberScrollState()
@@ -49,12 +51,10 @@ fun ScrollableDataTable(
 
     val processLabelList = listOf(ProcessLabel.NAME, ProcessLabel.CPU_PERCENTAGE, ProcessLabel.MEM_PERCENTAGE, ProcessLabel.PID)
 
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(screenHeight)
+            .height(tableHeight)
     ) {
 
         Box(
