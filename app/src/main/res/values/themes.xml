@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Operator" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+      Launch theme. This is what the window shows before Compose draws, so it must
+      match OperatorTheme (dark only) — otherwise the app opens on a white flash.
+    -->
+    <style name="Theme.Operator" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
 </resources>
