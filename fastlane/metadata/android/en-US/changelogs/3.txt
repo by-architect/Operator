@@ -1,0 +1,9 @@
+Bug fixes only; process monitoring is unchanged.
+
+- No more white flash while the app opens
+- The process list opens with the column header visible, not scrolled past it
+- The "root not detected" message and its retry button are centred
+- Settings: title no longer hidden behind the status bar, About now shows version and contact, and a Report an Issue link was added
+- Fixed headings and a text cursor that were invisible
+
+Still on v1.0.0? Uninstall it first: v1.0.1 onwards uses a new key.
