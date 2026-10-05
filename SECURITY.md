@@ -7,12 +7,6 @@ channel — for example confirming that a release really came from me:
 
 **byarchitect@disroot.org**
 
-> Until the handover is complete, `emindemir1541@proton.me` also reaches me.
-> That address is being retired and will be removed from this file once the
-> new one is confirmed.
-
-Please use email rather than a public issue for anything sensitive.
-
 ## Release signing
 
 Releases are signed by hand and published on the
