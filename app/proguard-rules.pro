@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Shizuku starts this service by its class name, in its own process. R8 cannot
+# see that, so keep the class and its constructor as they are.
+-keep class com.byarchitect.operator.data.system.ShizukuUserService { *; }

@@ -18,8 +18,8 @@ android {
         applicationId = "com.byarchitect.operator"
         minSdk = 24
         targetSdk = 35
-        versionCode = 4
-        versionName = "2.0"
+        versionCode = 7
+        versionName = "2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,7 +31,8 @@ android {
             applicationIdSuffix = ".debug"
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true      // R8: shrink and optimize the code
+            isShrinkResources = true    // and drop unused images and strings
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

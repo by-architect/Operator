@@ -1,0 +1,1 @@
+- Smaller and faster: the app is now shrunk and optimized (R8)
