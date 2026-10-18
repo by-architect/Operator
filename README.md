@@ -7,6 +7,7 @@
 **A process manager for Android, with root or Shizuku.**
 See what's running, what it's costing you, and stop it.
 
+[![F-Droid](https://img.shields.io/f-droid/v/com.byarchitect.operator?style=flat-square)](https://f-droid.org/packages/com.byarchitect.operator/)
 [![IzzyOnDroid](https://img.shields.io/endpoint?url=https%3A%2F%2Fapt.izzysoft.de%2Ffdroid%2Fapi%2Fv1%2Fshield%2Fcom.byarchitect.operator&style=flat-square)](https://apt.izzysoft.de/packages/com.byarchitect.operator)
 [![Release](https://img.shields.io/github/v/release/by-architect/Operator?style=flat-square)](https://github.com/by-architect/Operator/releases)
 [![Android](https://img.shields.io/badge/Android-7.0%2B-3DDC84?style=flat-square&logo=android&logoColor=white)](#-requirements)
@@ -52,9 +53,15 @@ Root is used automatically when available, otherwise Operator falls back to Shiz
 
 ## 📥 Install
 
+[<img src="docs/readme/badge-fdroid.png" alt="Get it on F-Droid" height="70">](https://f-droid.org/packages/com.byarchitect.operator/)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="70">](https://apt.izzysoft.de/packages/com.byarchitect.operator)
+[<img src="docs/readme/badge-fdroid-byarchitect.png" alt="Get it from the ByArchitect F-Droid repository" height="70">](https://fdroid.byarchitect.org/fdroid/repo?fingerprint=50941BDAC56B056A520ABFA3FC7DAAB789DEE5B83B295DA54A1961C7BC8A91C9)
+[<img src="docs/readme/badge-github.png" alt="Get it on GitHub" height="70">](https://github.com/by-architect/Operator/releases/latest)
 
-Or grab the APK from [Releases](https://github.com/by-architect/Operator/releases).
+- **F-Droid**, **IzzyOnDroid** and the **ByArchitect F-Droid repository** keep Operator up to date. To add the
+  ByArchitect repository, open [this link](https://fdroid.byarchitect.org/fdroid/repo?fingerprint=50941BDAC56B056A520ABFA3FC7DAAB789DEE5B83B295DA54A1961C7BC8A91C9) on your phone, then search for Operator in F-Droid.
+- **GitHub:** download `operator-v<version>.apk` from the
+  [latest release](https://github.com/by-architect/Operator/releases/latest). It does not update itself.
 
 > [!IMPORTANT]
 > **Coming from v1.0.0?** Uninstall it first. Every release from v1.0.1 onwards is signed
